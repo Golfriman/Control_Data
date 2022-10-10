@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormMenu</class>
+ <widget class="QMainWindow" name="FormMenu">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>720</width>
+    <height>575</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">font-family: &quot;Inter&quot;;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="verticalFrame">
+      <property name="maximumSize">
+       <size>
+        <width>16775</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QFrame
+{
+  background:#363740;
+}
+*
+{
+  color:#A4A6B3;
+  font-family:'Mulish';
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+/* identical to box height */
+
+  letter-spacing: 0.2px;
+}
+QPushButton
+{
+	text-align:left;
+	border:1px solid #363740;
+    color: #A4A6B3;
+	background: #363740;
+}
+QPushButton:checked
+{
+	border-left:3px solid #DDE2FF;
+	color: #DDE2FF;
+	background: #3E4049;
+}
+QPushButton:unchecked
+{
+	border:1px solid #363740;
+    color: #A4A6B3;
+	background: #363740;
+}
+QPushButton[checked='false']:hover
+{
+	background: rgba(62, 62, 73, 0.76);
+	color: rgb(207, 212, 242);
+}</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="mainMenu">
+         <property name="styleSheet">
+          <string notr="true">margin-top:25px;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/main_0.svg</normaloff>
+           <normalon>:/icon/main_1.svg</normalon>:/icon/main_0.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="booking">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/booking_1.svg</normaloff>
+           <normalon>:/icon/booking_0.svg</normalon>:/icon/booking_1.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="employee">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/emp_0.svg</normaloff>
+           <normalon>:/icon/emp_1.svg</normalon>:/icon/emp_0.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="signUp">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/signIn_1.svg</normaloff>
+           <normalon>:/icon/signIn_0.svg</normalon>:/icon/signIn_1.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="rooms">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/room_0.svg</normaloff>
+           <normalon>:/icon/room_1.svg</normalon>:/icon/room_0.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="checkIn">
+         <property name="styleSheet">
+          <string notr="true">margin-bottom: 55px;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/checkIn_0.svg</normaloff>
+           <normalon>:/icon/checkIn_1.svg</normalon>:/icon/checkIn_0.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>1</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background: #DFE0EB;
+border: 1px solid #40414A;</string>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="report">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/doc_0.svg</normaloff>
+           <normalon>:/icon/doc_1.svg</normalon>:/icon/doc_0.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignTop">
+        <widget class="QPushButton" name="settings">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/settings_0.svg</normaloff>
+           <normalon>:/icon/settings_1.svg</normalon>:/icon/settings_0.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="logOut">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../source.qrc">
+           <normaloff>:/icon/logOut_0.svg</normaloff>
+           <normalon>:/icon/logOut_1.svg</normalon>:/icon/logOut_0.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="../source.qrc"/>
+ </resources>
+ <connections/>
+</ui>

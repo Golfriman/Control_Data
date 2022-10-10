@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormAuthorization</class>
+ <widget class="QMainWindow" name="FormAuthorization">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>582</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>380</width>
+    <height>582</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>380</width>
+    <height>582</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget
+{
+background: #FFFFFF;
+}
+
+QLineEdit
+{
+background: #FCFDFE;
+/* grayscale / gray lightest */
+
+border: 1px solid #F0F1F7;
+border-radius: 8px;
+padding-left:16px;
+}
+QLineEdit:focus
+{
+background: #FCFDFE;
+/* grayscale / gray lightest */
+
+border: 1px solid #3751ff;
+border-radius: 8px;
+padding-left:16px;
+}
+QCheckBox
+{
+background:none;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="login">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>288</y>
+      <width>316</width>
+      <height>42</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="placeholderText">
+     <string>Имя пользователя</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>156</y>
+      <width>316</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">position: absolute;
+height: 30px;
+left: 32px;
+right: 32px;
+top: 156px;
+
+/* Bold/24px */
+
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 30px;
+text-align: center;
+letter-spacing: 0.3px;
+
+/* grayscale / black */
+
+color: #252733;</string>
+    </property>
+    <property name="text">
+     <string>Войти в Dashboard</string>
+    </property>
+    <property name="textFormat">
+     <enum>Qt::PlainText</enum>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>100</y>
+      <width>316</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">height: 24px;
+left: 32px;
+right: 32px;
+top: 100px;
+
+/* Bold/19px */
+
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 700;
+font-size: 19px;
+line-height: 24px;
+/* identical to box height */
+
+text-align: center;
+letter-spacing: 0.4px;
+
+/* sidebar / gray */
+
+color: #A4A6B3;
+
+opacity: 0.7;</string>
+    </property>
+    <property name="text">
+     <string>Dashboard Adminity</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>198</y>
+      <width>316</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">position: absolute;
+height: 20px;
+left: 32px;
+right: 32px;
+top: 198px;
+
+/* Regular/14px */
+
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+text-align: center;
+letter-spacing: 0.3px;
+
+/* grayscale / gray */
+
+color: #9FA2B4;</string>
+    </property>
+    <property name="text">
+     <string>Введите имя пользователя и пароль ниже</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>266</y>
+      <width>135</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>-1</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">position: absolute;
+height: 16px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+/* Bold/12px */
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 15px;
+letter-spacing: 0.3px;
+text-transform: uppercase;
+
+/* grayscale / gray */
+
+color: #9FA2B4;</string>
+    </property>
+    <property name="text">
+     <string>ИМЯ ПОЛЬЗОВАТЕЛЯ</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>354</y>
+      <width>78</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">position: absolute;
+height: 16px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+/* Bold/12px */
+
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 15px;
+letter-spacing: 0.3px;
+text-transform: uppercase;
+
+/* grayscale / gray */
+
+color: #9FA2B4;</string>
+    </property>
+    <property name="text">
+     <string>ПАРОЛЬ</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="password">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>376</y>
+      <width>316</width>
+      <height>42</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">padding-right:44px;</string>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
+    </property>
+    <property name="placeholderText">
+     <string>Пароль</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>442</y>
+      <width>316</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">position: absolute;
+left: 0px;
+right: 0px;
+top: 0px;
+bottom: 0px;
+
+/* Main/Blue */
+
+background: #3751FF;
+/* button / accent default */
+
+border-radius: 8px;
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+text-align: center;
+letter-spacing: 0.2px;
+
+/* grayscale / white */
+
+color: #FFFFFF;</string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="text">
+     <string>Войти</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox">
+    <property name="geometry">
+     <rect>
+      <x>308</x>
+      <y>377</y>
+      <width>40</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QCheckBox
+{
+	background:none;
+}
+QCheckBox::indicator:unchecked
+{
+  image:url(&quot;:/icon/Hide.svg&quot;);
+}
+
+QCheckBox::indicator:checked
+{
+  image:url(&quot;:/icon/Show.svg&quot;);
+}
+</string>
+    </property>
+    <property name="text">
+     <string notr="true"/>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="tristate">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>166</x>
+      <y>40</y>
+      <width>48</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../source.qrc">
+      <normaloff>:/icon/logo.svg</normaloff>:/icon/logo.svg</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
+     </size>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>230</y>
+      <width>316</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #F12B2C;
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 700;
+line-height: 30px;
+text-align: center;
+letter-spacing: 0.3px;</string>
+    </property>
+    <property name="text">
+     <string>Неверное имя пользователя или пароль</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="quitButton">
+    <property name="geometry">
+     <rect>
+      <x>32</x>
+      <y>442</y>
+      <width>316</width>
+      <height>48</height>
+     </rect>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">position: absolute;
+left: 0px;
+right: 0px;
+top: 0px;
+bottom: 0px;
+
+/* Main/Blue */
+
+background: red;
+/* button / accent default */
+
+border-radius: 8px;
+font-family: 'Mulish';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 20px;
+/* identical to box height, or 143% */
+
+text-align: center;
+letter-spacing: 0.2px;
+
+/* grayscale / white */
+
+color: #FFFFFF;</string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="text">
+     <string>Quit</string>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <zorder>quitButton</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>login</zorder>
+   <zorder>label</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label_3</zorder>
+   <zorder>label_4</zorder>
+   <zorder>label_5</zorder>
+   <zorder>password</zorder>
+   <zorder>checkBox</zorder>
+   <zorder>pushButton_2</zorder>
+   <zorder>label_6</zorder>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>380</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+ </widget>
+ <resources>
+  <include location="../source.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon/Hide.svg</file>
+        <file>icon/Show.svg</file>
+        <file>icon/logo.svg</file>
+        <file>icon/emp_0.svg</file>
+        <file>icon/emp_1.svg</file>
+        <file>icon/settings_0.svg</file>
+        <file>icon/settings_1.svg</file>
+        <file>icon/doc_0.svg</file>
+        <file>icon/doc_1.svg</file>
+        <file>icon/logOut_0.svg</file>
+        <file>icon/logOut_1.svg</file>
+        <file>icon/booking_0.svg</file>
+        <file>icon/booking_1.svg</file>
+        <file>icon/checkIn_0.svg</file>
+        <file>icon/checkIn_1.svg</file>
+        <file>icon/main_0.svg</file>
+        <file>icon/main_1.svg</file>
+        <file>icon/signIn_0.svg</file>
+        <file>icon/signIn_1.svg</file>
+        <file>icon/room_0.svg</file>
+        <file>icon/room_1.svg</file>
+        <file>icon/left_0.svg</file>
+        <file>icon/right_0.svg</file>
+        <file>icon/pointing hand.svg</file>
+        <file>icon/GigaChad.jpg</file>
+        <file>icon/logo.ico</file>
+        <file>font/Inter-Bold.otf</file>
+        <file>font/Inter-Light.otf</file>
+        <file>font/Inter-Regular.otf</file>
+    </qresource>
+</RCC>
