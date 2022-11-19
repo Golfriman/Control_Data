@@ -1,0 +1,46 @@
+insertServicesBooking(_data, _id) -> вставляет услуги в pre_service_booking
+
+	_data - регулярное выражение с услугами
+	_id - id бронирование или заселени
+
+insertBooking(_idR, _fullname, _phone, _checkIn, _checkOut, _numOfPeople, _services) -> заполняет таблицу booking и заодно вставляет данные в pre_service_booking
+	
+	_idR - id номера 
+	_fullname - ФИО посетителя
+	 _phone - телефон
+	 _checkIn - дата заселения
+	_checkOut - дата заселения
+	_numOfPeople - дата выселения
+	 _services - регулярное выражение услуг
+
+updateBooking(_idB, _idV, _idR, _idCheckOut, _numOfPeople, _data) -> обновляет данные о бронировании а также обновляет услуги
+	
+	_idB - id бронирования
+	 _idV - id посетителя
+	 _idR - id номера 
+	 _checkIn - дата заселения
+	_checkOut - дата заселения
+	_numOfPeople - дата выселения
+	 _data - регулярное выражение услуг
+
+resultOperationBooking(_idV) -> результат операций INSERT или UPDATE над таблицей booking, возвращает строку о статусе операции
+
+	 _idV - id посетителя
+
+
+deleteBooking (_idB) -> удаляет бронирование, а также услуги
+
+	_idB - id бронирования
+
+showBooking(dur) -> вся информация о бронировании
+
+	dur - на сколько дней обзор
+
+findVisitor(_phone)->ищет пользователей, у которых также начинается номер
+
+	_phone - начало номера
+
+findServiceBooking(_idB)->ищет услуги для конкретного бронирования
+
+	_idB - id бронирования
+
