@@ -15,7 +15,7 @@ void SqlWorker::process()
     {
         std::string line;
 
-        std::cout << "SQL: ";
+        //std::cout << "SQL: ";
         std::getline(std::cin, line);
         if(line.empty())
         {

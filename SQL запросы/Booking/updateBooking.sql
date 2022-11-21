@@ -11,14 +11,20 @@ AS $$
 DECLARE 
 	res TEXT;
 BEGIN 
-	UPDATE booking 
-		SET idRoom = _idR,
-			checkIn = _checkIn,
-			checkOutFrom = _checkOut,
-			numOfPeople = _numOfPeople
-		WHERE idBooking = _idB;
-	res :=resultOperationBooking(_idV);
-	if(res = 'Успешно') THEN CALL insertServicesBooking(_data, _idB); END IF;
+		BEGIN
+		UPDATE booking 
+			SET idRoom = _idR,
+				checkIn = _checkIn,
+				checkOutFrom = _checkOut,
+				numOfPeople = _numOfPeople
+			WHERE idBooking = _idB;
+		res :=resultOperationBooking(_idV);
+		if(res = 'Успешно') THEN CALL insertServicesBooking(_data, _idB); END IF;
+		EXCEPTION WHEN OTHERS THEN
+		GET STACKED DIAGNOSTICS
+		res:=MESSAGE_TEXT;
+		RETURN res;
+		END;
 	return res;
 END; $$ LANGUAGE plpgsql;
 

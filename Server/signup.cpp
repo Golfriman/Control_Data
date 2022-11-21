@@ -2,7 +2,6 @@
 
 SignUp::SignUp(QDataStream& stream)
 {
-
 }
 
 QByteArray SignUp::execute(QSqlDatabase &db)

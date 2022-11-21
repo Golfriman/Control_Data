@@ -9,7 +9,7 @@ Authorization::Authorization(QDataStream &stream)
 
 QString Authorization::createQuery()
 {
-    return QString("SELECT firstname, secondname FROM authorizationinsystem where login = \'%1\' and password = crypt('\%2\', password)").arg(login).arg(password);
+    return QString("SELECT firstname, secondname FROM logining(\'%1\', \'%2\');").arg(login).arg(password);
 }
 
 QByteArray Authorization::execute(QSqlDatabase& db)
@@ -35,5 +35,4 @@ QByteArray Authorization::execute(QSqlDatabase& db)
 
 Authorization::~Authorization()
 {
-    delete out;
 }

@@ -2,7 +2,7 @@
 
 Employee::Employee(QDataStream& stream)
 {
-
+    stream >> type;
 }
 
 QString Employee::queryAllEmployee()

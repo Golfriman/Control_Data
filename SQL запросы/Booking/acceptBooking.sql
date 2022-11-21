@@ -13,7 +13,9 @@ DECLARE
 	CURRENT_CHECK_IN_ID INT;
 	_idRoom INT;
 	CURRENT_ID_VISITOR INT;
+	msg_txt TEXT;
 BEGIN
+	BEGIN
 	--Проверка на то что бронирование вообще существует, не знаю просто так
 	IF NOT EXISTS(SELECT * FROM booking where idBooking = _idB) THEN RETURN 'Ошибка отсутсвует такое бронирование'; END IF;
 	SELECT idRoom INTO _idRoom FROM booking where idBooking = _idB; --Получаем информацию о забронированной комнате
@@ -42,10 +44,22 @@ BEGIN
 		CURRENT_ID_VISITOR := NULL;
 		i := i+1;
 	END LOOP;
+	EXCEPTION WHEN OTHERS THEN
+	GET STACKED DIAGNOSTICS
+	msg_txt:=MESSAGE_TEXT;
+	RETURN msg_txt;
+	END;
 	RETURN 'Удачно';
 END; $$ LANGUAGE PLPGSQL;
 --Проверка
+select * from visitor where fullname='Рябков Артемий Геннадиевич';
 select * from Booking;
 select * from living;
+DELETE FROM checkIn WHERE idCheckIn = 25;
 select * from checkIn;
-SELECT acceptBooking(6, 1, '{"Егорова Агнесса Ивановна"}', '{6452}', '{588632}', '{NULL}');
+SELECT * FROM acceptBooking(32, 1, '{"Рябков Артемий Геннадиевич"}', '{4264}', '{6435}', '{""}')
+
+
+
+
+

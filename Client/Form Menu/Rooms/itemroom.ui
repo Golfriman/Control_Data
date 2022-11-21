@@ -17,23 +17,16 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="room">
        <property name="text">
         <string>Номер №</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>TextLabel</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="statusCleaning">
      <item>
       <property name="text">
        <string>Требуется уборка</string>
@@ -47,7 +40,7 @@
     </widget>
    </item>
    <item alignment="Qt::AlignRight">
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="statusRoom">
      <property name="text">
       <string>Свободно</string>
      </property>

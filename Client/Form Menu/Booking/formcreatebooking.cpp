@@ -2,7 +2,8 @@
 #include "ui_formcreatebooking.h"
 #include "../const.h"
 #include "phonevalidator.h"
-FormCreateBooking::FormCreateBooking(QWidget *parent) :
+#include <iostream>
+FormCreateBooking::FormCreateBooking(std::vector<std::pair<QString, QString> > &services, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormCreateBooking)
 {
@@ -11,6 +12,24 @@ FormCreateBooking::FormCreateBooking(QWidget *parent) :
     setWindowModality(Qt::ApplicationModal);
     auto validate = new PhoneValidator;
     ui->phone->setValidator(validate);
+
+    air = "null";
+    bath = "null";
+    ui->aircond->setCheckState(Qt::PartiallyChecked);
+    ui->bathroom->setCheckState(Qt::PartiallyChecked);
+    filter = "%";
+    ui->scrollServices->setLayout(new QVBoxLayout);
+    for(const auto& i: services)
+    {
+        auto itm = new QCheckBox(i.first);
+        connect(itm, SIGNAL(stateChanged(int)), this, SLOT(slotClickServices(int)));
+        ui->scrollServices->layout()->addWidget(itm);
+    }
+    for(auto& i: services)
+    {
+        priceService.emplace(i.first, i.second.toInt());
+    }
+
 }
 
 FormCreateBooking::~FormCreateBooking()
@@ -18,19 +37,60 @@ FormCreateBooking::~FormCreateBooking()
     delete ui;
 }
 
+void FormCreateBooking::slotGetFindResult(QDataStream &in)
+{
+    in >> phone >> fullname;
+    ui->resultSearch->setText("Результат поиска: <strong>" + fullname + "\t" + phone + "</strong>");
+}
+
+void FormCreateBooking::slotGetFindRoomResult(QDataStream &in)
+{
+    QLayoutItem* itm;
+    while((itm = ui->scrollAreaWidgetContents->layout()->takeAt(0))!= nullptr)
+    {
+        delete itm->widget();
+        delete itm;
+    }
+    int size;
+    in >> size;
+    for(int i = 0; i < size; i++)
+    {
+        int price;
+        QString category;
+        QString idRoom;
+        in >> category >> price >> idRoom;
+        if(prices.find(category) == prices.end())
+        {
+            prices.emplace(category, price);
+            idRooms.emplace(category, idRoom);
+        }
+        auto itm = new QRadioButton(category);
+        connect(itm, SIGNAL(clicked()), this, SLOT(slotSelectTypeRoom()));
+        ui->scrollAreaWidgetContents->layout()->addWidget(itm);
+    }
+}
+
 void FormCreateBooking::createCalendar()
 {
-    calendar = new Calendar();
+    calendar.reset(new Calendar());
     calendar->setGridVisible(true);
-    connect(calendar, SIGNAL(signalCheckIn(QDate&)), this, SLOT(slotCheckIn(QDate&)));
-    connect(calendar, SIGNAL(signalCheckOut(QDate&)), this, SLOT(slotCheckOut(QDate&)));
-    connect(calendar, SIGNAL(finished()), calendar, SLOT(deleteLater()));
+    connect(calendar.get(), SIGNAL(signalCheckIn(QDate&)), this, SLOT(slotCheckIn(QDate&)));
+    connect(calendar.get(), SIGNAL(signalCheckOut(QDate&)), this, SLOT(slotCheckOut(QDate&)));
+    connect(calendar.get(), SIGNAL(finished()), calendar.get(), SLOT(deleteLater()));
+}
+
+void FormCreateBooking::findRooms()
+{
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_6_2);
+    out << Send::ONE << Type::FIND_ROOM << ui->numPeople->currentText() << filter << bath << air << dataCheckIn << dataCheckOut;
+    emit signalCreateBooking(data);
 }
 
 void FormCreateBooking::on_pushButton_2_clicked()
 {
     QByteArray data;
-    data.clear();
     auto checkLineEdit = [](QLineEdit& edit)->bool
     {
       if(edit.text().isEmpty())
@@ -50,7 +110,15 @@ void FormCreateBooking::on_pushButton_2_clicked()
     {
       return edit->text();
     };
-    out << Type::INSERT << text(ui->phone) << text(ui->checkIn) << text(ui->checkOut) << ui->typeRoom->currentText() << ui->numPeople->currentText();/*Информация о дате и тому подобное...*/
+    QString services = "(";
+    for(auto& i: this->selectedServices)
+    {
+        services += i + "|";
+    }
+    services[services.size()-1] = ')';
+    if(services.size()==1)
+        services = "()";
+    out << Send::ALL << Type::INSERT << idRooms[categories] << fullname << phone << text(ui->checkIn) << text(ui->checkOut)<< ui->numPeople->currentText() << services;/*Информация о дате и тому подобное...*/
     emit signalCreateBooking(data);
     deleteLater();
 }
@@ -70,18 +138,109 @@ void FormCreateBooking::on_pushButton_4_clicked()
 
 void FormCreateBooking::slotCheckIn(QDate &d)
 {
-    ui->checkIn->setText(d.toString("dd.MM.yyyy"));
+    ui->checkIn->setText(d.toString("yyyy-MM-dd"));
+    dataCheckIn = ui->checkIn->text();
     ui->checkOut->clear();
 }
 
 void FormCreateBooking::slotCheckOut(QDate &d)
 {
-    ui->checkOut->setText(d.toString("dd.MM.yyyy"));
+    ui->checkOut->setText(d.toString("yyyy-MM-dd"));
+    dataCheckOut = ui->checkOut->text();
+    findRooms();
 }
 
 
 void FormCreateBooking::on_pushButton_clicked()
 {
     emit signalSignUp();
+}
+
+void FormCreateBooking::slotClickServices(int index)
+{
+    auto itm = (QCheckBox*)sender();
+    switch(index)
+    {
+    case Qt::Checked:
+        selectedServices.emplace(itm->text());
+        break;
+    case Qt::Unchecked:
+        if(selectedServices.find(itm->text())!=selectedServices.end()) selectedServices.erase(itm->text());
+        break;
+    }
+    std::cout << itm->text().toStdString() << std::endl;
+}
+
+void FormCreateBooking::on_phone_textChanged(const QString &arg1)
+{
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_6_2);
+
+    out << Send::ONE <<Type::FIND << arg1;
+    emit signalCreateBooking(data);
+}
+
+
+void FormCreateBooking::on_filterView_currentIndexChanged(int index)
+{
+    (void)index;
+    if(ui->checkIn->text().isEmpty() || ui->checkOut->text().isEmpty())
+        return;
+    findRooms();
+}
+
+
+void FormCreateBooking::on_bathroom_stateChanged(int arg1)
+{
+    if(ui->checkIn->text().isEmpty() || ui->checkOut->text().isEmpty())
+        return;
+    switch(arg1)
+    {
+    case Qt::Unchecked:
+        bath = "false";
+        break;
+    case Qt::PartiallyChecked:
+        bath = "null";
+        break;
+    case Qt::Checked:
+        bath = "true";
+        break;
+    }
+    findRooms();
+}
+
+
+void FormCreateBooking::on_aircond_stateChanged(int arg1)
+{
+    if(ui->checkIn->text().isEmpty() || ui->checkOut->text().isEmpty())
+        return;
+    switch(arg1)
+    {
+    case Qt::Unchecked:
+        air = "false";
+        break;
+    case Qt::PartiallyChecked:
+        air = "null";
+        break;
+    case Qt::Checked:
+        air = "true";
+        break;
+    }
+    findRooms();
+}
+
+void FormCreateBooking::slotSelectTypeRoom()
+{
+    auto itm = (QRadioButton*)sender();
+    categories = itm->text();
+    ui->label_3->setText("Номер " + idRooms[categories]);
+}
+
+
+void FormCreateBooking::on_numPeople_currentIndexChanged(int index)
+{
+    (void)index;
+    findRooms();
 }
 

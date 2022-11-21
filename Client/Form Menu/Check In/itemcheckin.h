@@ -2,6 +2,7 @@
 #define ITEMCHECKIN_H
 
 #include <QtWidgets>
+#include "../const.h"
 
 namespace Ui {
 class ItemCheckIn;
@@ -12,16 +13,19 @@ class ItemCheckIn : public QWidget
     Q_OBJECT
 
 public:
-    explicit ItemCheckIn(const std::list<QString>& persons, QWidget *parent = nullptr);
+    ItemCheckIn() = default;
+    explicit ItemCheckIn(QDataStream& in, QWidget *parent = nullptr);
     ~ItemCheckIn();
-
+signals:
+    void sendToServer(const QByteArray&);
 private slots:
-    void on_checkBox_stateChanged(int arg1);
+    void on_pushButton_3_clicked();
 
-    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
 
 private:
     Ui::ItemCheckIn *ui;
+    QString id;
 };
 
 #endif // ITEMCHECKIN_H

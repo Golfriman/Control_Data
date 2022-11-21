@@ -14,9 +14,11 @@ BEGIN
 			SELECT DISTINCT booking.idbooking, booking.idroom, visitor.idVisitor, visitor.fullname,  booking.checkin, booking.checkoutfrom, booking.numofpeople, visitor.phone
 			FROM booking, visitor, checkin
 			WHERE booking.idvisitor = visitor.idvisitor 
-				AND booking.idvisitor NOT IN (SELECT living.idVisitor FROM living WHERE living.idCheckIn = checkin.idCheckIn)
+				AND booking.idroom NOT IN (SELECT checkin.idroom FROM checkin WHERE checkin.d_checkin =CURRENT_DATE)
 				AND booking.checkIn BETWEEN CURRENT_DATE AND CURRENT_DATE + duration; 
 END; $$ LANGUAGE plpgsql;
+
+select showbooking(0);
 
 --select showbooking(30);
 				  

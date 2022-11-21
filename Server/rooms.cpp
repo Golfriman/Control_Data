@@ -2,17 +2,12 @@
 
 Rooms::Rooms(QDataStream& stream)
 {
-
+    stream >> type;
 }
 
 QString Rooms::createViewQuery()
 {
-    return QString("SELECT category, status, viewfromthewindow, CASE "
-                                                                "WHEN EXISTS(SELECT * FROM booking NATURAL JOIN room"
-                                                                    "WHERE current_date() BETWEEN booking.checkin AND booking.checkoutfrom"
-                                                                        "THEN \'Занято\'"
-                                                                "ELSE \'Свободно\'"
-                    "FROM room");
+    return QString("SELECT * FROM showRooms() ORDER BY _ID");
 }
 
 QByteArray Rooms::execute(QSqlDatabase &db)
@@ -24,7 +19,7 @@ QByteArray Rooms::execute(QSqlDatabase &db)
     *out << qView.size();
     while(qView.next())
     {
-        *out << qView.value(0).toString() << qView.value(1).toString() << qView.value(2).toString() << qView.value(3).toString();
+        *out << qView.value(0).toString() << qView.value(1).toString() << qView.value(2).toString();
     }
 
     return data;

@@ -11,6 +11,7 @@ class Command
 protected:
     QByteArray data;
     QDataStream* out;
+    int type;
     void init();
 public:
     Command();

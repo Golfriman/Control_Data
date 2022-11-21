@@ -7,11 +7,6 @@ FormRooms::FormRooms(QWidget *parent) :
     ui(new Ui::FormRooms)
 {
     ui->setupUi(this);
-    auto layout = ui->scrollAreaWidgetContents->layout();
-    for(size_t i = 0u; i < 10u; i++)
-    {
-        layout->addWidget(new ItemRoom());
-    }
 }
 
 void FormRooms::callSignal(QString filter)
@@ -26,5 +21,15 @@ FormRooms::~FormRooms()
 
 void FormRooms::slotGetData(QDataStream &in)
 {
-
+    auto layout = ui->scrollAreaWidgetContents->layout();
+    int size;
+    in >> size;
+    for(int i = 0; i < size; i++)
+    {
+        QString idRoom;
+        QString statusCleaning;
+        QString statusRoom;
+        in >> idRoom >> statusCleaning >> statusRoom;
+        layout->addWidget(new ItemRoom(idRoom, statusCleaning, statusRoom));
+    }
 }

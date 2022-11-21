@@ -20,10 +20,17 @@ enum Send{
 
 enum Type
 {
-    VIEW,
+    VIEW = 0,
     INSERT,
     UPDATE,
-    DROP
+    DROP,
+    FIND,
+    CONSTANT,
+    ACCEPT,
+    FIND_ROOM,
+    SHOW_CHECK_IN,
+    CHECK_OUT_FROM,
+    PAY
 };
 
 #endif // CONST_H

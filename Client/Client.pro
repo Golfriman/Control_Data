@@ -35,6 +35,7 @@ SOURCES += \
     'Form Menu'/Employee/itememployee.cpp \
     'Form Menu'/Employee/itemworkhotel.cpp \
     'Form Menu'/Booking/phonevalidator.cpp \
+    'Form Menu'/Booking/acceptbooking.cpp \
     main.cpp \
     client.cpp \
     workerconnect.cpp
@@ -52,6 +53,7 @@ HEADERS += \
     'Form Menu'/Employee/itememployee.h \
     'Form Menu'/Employee/itemworkhotel.h \
     'Form Menu'/Booking/phonevalidator.h \
+    'Form Menu'/Booking/acceptbooking.h \
     client.h \
     'Form Authorization'\formauthorization.h \
     'Form Menu'\Booking\formbooking.h \
@@ -95,7 +97,8 @@ FORMS += \
    'Form Menu'/Settings/editservice.ui \
    'Form Menu'/Settings/itemservice.ui \
    'Form Menu'/Employee/itememployee.ui \
-   'Form Menu'/Employee/itemworkhotel.ui
+   'Form Menu'/Employee/itemworkhotel.ui \
+   'Form Menu'/Booking/acceptbooking.ui
 
 RESOURCES += \
    source.qrc

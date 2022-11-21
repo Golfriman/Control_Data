@@ -11,13 +11,15 @@
 #include "rooms.h"
 #include "checkin.h"
 #include <QThread>
-#include "stateroomworker.h"
 #include "sqlworker.h"
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <set>
+#include <QDateTime>
+#include <QSharedPointer>
+#include <QTimer>
 class Server:public QTcpServer
 {
     Q_OBJECT
@@ -28,15 +30,17 @@ private:
     Command* createConcreteCommand(int idCommand, QDataStream& in);
 private:
     QSqlDatabase db;
-    QTcpSocket* socket;
-    std::vector<QTcpSocket*>sockets;
+    std::list<QTcpSocket*>sockets;
     QByteArray data;
 
-    SqlWorker* worker;
-    QThread* thread;
+    QSharedPointer<SqlWorker> worker;
+    QSharedPointer<QThread> thread;
 
-    StateRoomWorker* worker2;
-    QThread* thread2;
+    QDateTime now{QDateTime::currentDateTime()};
+    QSharedPointer<QTimer> timer;
+private slots:
+    void slotChangeStatusRoom();
+    void slotDisconnectClient();
 public slots:
     void incomingConnection(qintptr socketDescriptor)override;
     void slotReadyRead();

@@ -103,12 +103,13 @@ void FormAuthorization::on_pushButton_clicked()
     data.clear();
     QDataStream out(&data, QIODevice::WriteOnly);
     out <<  Form::AUTHORIZATION << Send::ONE << ui->login->text() << ui->password->text() <<
-            Form::MAIN_MENU     << Send::ONE <<
-            Form::BOOKING       << Send::ONE <<
-            Form::EMPLOYEE      << Send::ONE <<
-            Form::CHECK_IN      << Send::ONE <<
-            Form::REPORT        << Send::ONE <<
-            Form::ROOMS         << Send::ONE <<
+            Form::MAIN_MENU     << Send::ONE << Type::VIEW      <<
+            Form::BOOKING       << Send::ONE << Type::CONSTANT  <<
+            Form::BOOKING       << Send::ONE << Type::VIEW      <<
+            Form::EMPLOYEE      << Send::ONE << Type::VIEW      <<
+            Form::CHECK_IN      << Send::ONE << Type::VIEW      <<
+            Form::REPORT        << Send::ONE << Type::VIEW      <<
+            Form::ROOMS         << Send::ONE << Type::VIEW      <<
             Form::SETTINGS      << Send::ONE <<
             Form::SIGN_UP       << Send::ONE;
     emit request(data);

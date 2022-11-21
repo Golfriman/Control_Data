@@ -2,7 +2,7 @@
 
 Report::Report(QDataStream& stream)
 {
-
+    stream >> type;
 }
 
 QByteArray Report::execute(QSqlDatabase &db)

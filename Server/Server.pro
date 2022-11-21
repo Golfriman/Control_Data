@@ -21,8 +21,7 @@ SOURCES += \
         server.cpp \
         settings.cpp \
         signup.cpp \
-        sqlworker.cpp \
-        stateroomworker.cpp
+        sqlworker.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -42,8 +41,7 @@ HEADERS += \
     settings.h \
     signup.h \
     ..\const.h \
-    sqlworker.h \
-    stateroomworker.h
+    sqlworker.h
 
 RESOURCES +=
 

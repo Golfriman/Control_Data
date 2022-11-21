@@ -12,7 +12,7 @@ class ItemRoom : public QWidget
     Q_OBJECT
 
 public:
-    explicit ItemRoom(QWidget *parent = nullptr);
+    explicit ItemRoom(QString _id, QString statusCleaning, QString statusRoom, QWidget *parent = nullptr);
     ~ItemRoom();
 
 private:

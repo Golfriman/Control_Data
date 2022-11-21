@@ -160,6 +160,7 @@ void Client::createWorker()
 
 void Client::slotReadyRead()
 {
+
     QDataStream in(socket);
     while(!in.atEnd())
     {

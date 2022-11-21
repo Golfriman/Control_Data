@@ -2,7 +2,7 @@
 
 MainMenu::MainMenu(QDataStream& stream)
 {
-
+    stream >> type;
 }
 
 QByteArray MainMenu::execute(QSqlDatabase& db)

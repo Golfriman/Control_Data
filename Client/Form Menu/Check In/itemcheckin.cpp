@@ -2,16 +2,17 @@
 #include "ui_itemcheckin.h"
 #include "service.h"
 
-ItemCheckIn::ItemCheckIn(const std::list<QString>& persons, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ItemCheckIn)
+ItemCheckIn::ItemCheckIn(QDataStream &in, QWidget *parent)
 {
-    ui->setupUi(this);
-    ui->frame->setVisible(false);
-    auto layout = ui->frame->layout();
-    for(auto& i: persons)
+    in >> id;
+    int size;
+    in >> size;
+    auto layout = ui->scrollAreaWidgetContents->layout();
+    for(int i = 0; i < size; i++)
     {
-        layout->addWidget(new QLabel(i));
+        QString fullname;
+        QString phone;
+        layout->addWidget(new QLabel(fullname + "\t" + phone));
     }
 }
 
@@ -20,29 +21,22 @@ ItemCheckIn::~ItemCheckIn()
     delete ui;
 }
 
-void ItemCheckIn::on_checkBox_stateChanged(int arg1)
+
+void ItemCheckIn::on_pushButton_3_clicked()
 {
-    switch(arg1)
-    {
-        case Qt::Unchecked:
-        {
-            ui->frame->setVisible(false);
-            break;
-        }
-        case Qt::Checked:
-        {
-            ui->frame->setVisible(true);
-            break;
-        }
-        default:
-        break;
-    }
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out << Send::ALL << Type::CHECK_OUT_FROM << id;
+
 }
 
 
-void ItemCheckIn::on_pushButton_clicked()
+void ItemCheckIn::on_pushButton_2_clicked()
 {
-    Service* form = new Service();
-    form->show();
+    if(ui->numberOfPaid->text().isEmpty())
+        return;
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out << Send::ALL << Type::PAY << id << ui->numberOfPaid->text();
 }
 

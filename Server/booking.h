@@ -15,14 +15,19 @@ private:
         WEEK = 7,
         MONTH = 30
     };
-    QString queryViewBooking(qint16 endView = 0);
-    QString queryUpdateBooking();
-    QString currentDate(quint16 days = 0);
-    uint16_t room;
-    uint16_t checkIn;
-    uint16_t checkOut;
-    uint16_t numOfPeople;
-    uint idBooking;
+    void fillShowingDays(QSqlDatabase& db, uint8_t dur);
+    QString room;
+    QString checkIn;
+    QString checkOut;
+    QString phone;
+    QString numOfPeople;
+    int idVisitor;
+    QString idBooking;
+    QString fullname;
+    QString filter;
+    QString air;
+    QString bath;
+    QString array_services;
 };
 
 #endif // BOOKING_H

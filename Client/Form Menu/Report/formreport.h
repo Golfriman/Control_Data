@@ -28,6 +28,7 @@ private:
     QTextDocument doc;
     QByteArray data;
     Ui::FormReport *ui;
+    QString html;
 };
 
 #endif // FORMREPORT_H
