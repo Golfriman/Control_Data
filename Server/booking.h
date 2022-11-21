@@ -28,6 +28,9 @@ private:
     QString air;
     QString bath;
     QString array_services;
+    QString array_nums;
+    QString array_series;
+    QString countDays;
 };
 
 #endif // BOOKING_H

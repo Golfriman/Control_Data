@@ -30,8 +30,6 @@ Server::Server()
     timer = QSharedPointer<QTimer>(new QTimer(), &QObject::deleteLater);
     connect(timer.get(), SIGNAL(timeout()), this, SLOT(slotChangeStatusRoom()));
     timer.get()->start(1);
-
-
 }
 
 Server::~Server()

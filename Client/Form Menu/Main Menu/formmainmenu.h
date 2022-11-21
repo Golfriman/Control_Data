@@ -19,7 +19,7 @@ public:
 
     ~FormMainMenu();
 private:
-    void createSeries(QLineSeries *& series, QColor color, QString name);
+    void createSeries(QScopedPointer<QLineSeries> &series, QColor color, QString name);
     void createChart();
     void createView();
 public slots:
@@ -28,10 +28,15 @@ public slots:
 signals:
     void signalSendToServer(QByteArray&);
 private:
-    QChart* chart;
-    QChartView* view;
-    QLineSeries* seriesBooking;
-    QLineSeries* seriesLiving;
+    QString money;
+    QString free;
+    QString vacant;
+    QString booked;
+    QString overdue;
+    QScopedPointer<QChart> chart;
+    QScopedPointer<QChartView> view;
+    QScopedPointer<QLineSeries> seriesLiving;
+    //QLineSeries* seriesLiving;
     QByteArray data;
     Ui::FormMainMenu *ui;
 };

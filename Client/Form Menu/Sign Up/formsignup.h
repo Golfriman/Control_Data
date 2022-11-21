@@ -16,9 +16,11 @@ public:
     ~FormSignUp();
 public slots:
     void slotGetData(QDataStream& in);
-    void callSignal(QString filter = "");
 signals:
     void signalSendToServer(QByteArray&);
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     QByteArray data;

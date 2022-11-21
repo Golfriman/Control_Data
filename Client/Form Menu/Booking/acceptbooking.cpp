@@ -1,7 +1,8 @@
 #include "acceptbooking.h"
 #include "ui_acceptbooking.h"
+#include "../const.h"
 
-acceptBooking::acceptBooking(int num, QWidget *parent) :
+acceptBooking::acceptBooking(QString id, int num, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::acceptBooking)
 {
@@ -38,6 +39,7 @@ acceptBooking::acceptBooking(int num, QWidget *parent) :
         hor[i]->setLayout(gHor[i]);
         ui->layout->addWidget(hor[i]);
     }
+    this->id = id;
 
 }
 
@@ -55,29 +57,34 @@ void acceptBooking::on_pushButton_clicked()
     QString arrayPhone= "'{";
 
     for(auto& i: fullname)
-        arrayFIO += "\"" + i.second->text() + '"' + ',';
+        arrayFIO +='"' + i.second->text() + '"' + ',';
     arrayFIO[arrayFIO.size()-1] = '}';
-    arrayFIO += '\'';
 
     for(auto& i: seriesPass)
         arrayPassSeries += i.second->text() + ",";
     arrayPassSeries[arrayPassSeries.size()-1] = '}';
-    arrayPassSeries += '\'';
+    arrayPassSeries+="'";
 
     for(auto& i: numberPass)
         arrayPassNumber += i.second->text() + ",";
     arrayPassNumber[arrayPassNumber.size()-1] = '}';
-    arrayPassNumber += '\'';
+    arrayPassNumber+="'";
 
 
     for(auto& i: phone)
         arrayPhone += '"' + i.second->text() + '"' + ',';
     arrayPhone[arrayPhone.size()-1] = '}';
-    arrayPhone += '\'';
-
+    arrayPhone += "'";
     qDebug() << arrayFIO;
     qDebug() << arrayPassSeries;
     qDebug() << arrayPassNumber;
     qDebug() << arrayPhone;
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out <<  Send::ALL << Type::ACCEPT << id << ui->countDays->text() << arrayFIO << arrayPassSeries << arrayPassNumber << arrayPhone;
+    emit this->signalLiving(data);
+    emit closeMe();
+    deleteLater();
+
 }
 

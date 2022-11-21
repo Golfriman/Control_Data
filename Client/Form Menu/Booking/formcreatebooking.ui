@@ -239,7 +239,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>478</width>
+                <width>520</width>
                 <height>159</height>
                </rect>
               </property>
@@ -307,9 +307,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_11">
+      <widget class="QLabel" name="price">
        <property name="text">
-        <string>1 $</string>
+        <string>0</string>
        </property>
       </widget>
      </item>

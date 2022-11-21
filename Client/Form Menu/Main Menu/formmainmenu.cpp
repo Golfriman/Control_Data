@@ -6,18 +6,11 @@
 
 FormMainMenu::FormMainMenu(QWidget *parent) :
     QWidget(parent),
-    seriesBooking(nullptr),
-    seriesLiving(nullptr),
     ui(new Ui::FormMainMenu)
 {
     ui->setupUi(this);
     createView();
-    ui->frame_4->layout()->addWidget(view);
-    for(float i = 0; i < 30; i+=0.5)
-    {
-        *seriesBooking << QPointF(i, i + rand()% 2);
-        *seriesLiving << QPointF(i, i + rand()%2);
-    }
+    ui->frame_4->layout()->addWidget(view.get());
 }
 
 void FormMainMenu::callSignal(QString filter)
@@ -30,19 +23,19 @@ FormMainMenu::~FormMainMenu()
     delete ui;
 }
 
-void FormMainMenu::createSeries(QLineSeries *&series, QColor color, QString name)
+void FormMainMenu::createSeries(QScopedPointer<QLineSeries>&series, QColor color, QString name)
 {
-    series = new QLineSeries();
+    series.reset(new QLineSeries());
     series->setPen(QPen(color));
     series->setName(name);
 }
 
 void FormMainMenu::createChart()
 {
-    chart = new QChart();
-    chart->addSeries(seriesLiving);
-    chart->addSeries(seriesBooking);
+    chart.reset(new QChart());
 
+    createSeries(seriesLiving, Qt::blue, "Заселение за последние 30 дней");
+    chart->addSeries(seriesLiving.get());
     chart->createDefaultAxes();
     chart->axes(Qt::Horizontal).first()->setRange(0, 30);
     chart->axes(Qt::Horizontal).first()->setTitleText("Активность за последние 30 дней");
@@ -54,16 +47,28 @@ void FormMainMenu::createChart()
 
 void FormMainMenu::createView()
 {
-    createSeries(seriesBooking, Qt::red, "Бронирование");
-    createSeries(seriesLiving, Qt::blue, "Заселение");
-    createChart();
-    view = new QChartView(chart);
+    this->createChart();
+    view.reset(new QChartView(chart.get()));
     view->setRenderHint(QPainter::Antialiasing);
 }
 
 void FormMainMenu::slotGetData(QDataStream &in)
 {
-    qDebug() << "SLOT MAIN MENU";
-
-    view->grab().save("Graphics.png", "PNG");
+    seriesLiving->clear();
+    in >> free >> vacant >> booked >> overdue;
+    ui->free->setText(free);
+    ui->vacant->setText(vacant);
+    ui->booked->setText(booked);
+    ui->overdue->setText(overdue);
+    int size;
+    in >> size;
+    for(int i = 0; i < size;i++)
+    {
+        int y;
+        in >> y;
+        seriesLiving->append(i, y);
+    }
+    in >> money;
+    ui->money->setText(money);
+    //view->grab().save("Graphics.png", "PNG");
 }

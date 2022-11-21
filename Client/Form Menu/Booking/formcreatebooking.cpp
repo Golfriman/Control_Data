@@ -8,6 +8,7 @@ FormCreateBooking::FormCreateBooking(std::vector<std::pair<QString, QString> > &
     ui(new Ui::FormCreateBooking)
 {
     ui->setupUi(this);
+    price = 0;
     setWindowTitle("Создание брони");
     setWindowModality(Qt::ApplicationModal);
     auto validate = new PhoneValidator;
@@ -141,6 +142,7 @@ void FormCreateBooking::slotCheckIn(QDate &d)
     ui->checkIn->setText(d.toString("yyyy-MM-dd"));
     dataCheckIn = ui->checkIn->text();
     ui->checkOut->clear();
+    intCheckIn = d.toJulianDay();
 }
 
 void FormCreateBooking::slotCheckOut(QDate &d)
@@ -148,6 +150,7 @@ void FormCreateBooking::slotCheckOut(QDate &d)
     ui->checkOut->setText(d.toString("yyyy-MM-dd"));
     dataCheckOut = ui->checkOut->text();
     findRooms();
+    intCheckout = d.toJulianDay();
 }
 
 
@@ -163,12 +166,15 @@ void FormCreateBooking::slotClickServices(int index)
     {
     case Qt::Checked:
         selectedServices.emplace(itm->text());
+        price += priceService[itm->text()];
         break;
     case Qt::Unchecked:
         if(selectedServices.find(itm->text())!=selectedServices.end()) selectedServices.erase(itm->text());
+        price -= priceService[itm->text()];
         break;
     }
-    std::cout << itm->text().toStdString() << std::endl;
+    ui->price->setText(QString::number(price));
+    //std::cout << itm->text().toStdString() << std::endl;
 }
 
 void FormCreateBooking::on_phone_textChanged(const QString &arg1)
@@ -235,6 +241,10 @@ void FormCreateBooking::slotSelectTypeRoom()
     auto itm = (QRadioButton*)sender();
     categories = itm->text();
     ui->label_3->setText("Номер " + idRooms[categories]);
+/*ТУТА*/
+
+    price += prices[categories]* (intCheckout - intCheckIn);
+    ui->price->setText(QString::number(price));
 }
 
 

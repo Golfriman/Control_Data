@@ -24,6 +24,9 @@ Booking::Booking(QDataStream& stream)
         break;
     case Type::FIND_ROOM:
         stream >>numOfPeople>> filter >> bath >> air >> checkIn >> checkOut;
+    case Type::ACCEPT:
+        stream >> idBooking >> countDays >> fullname >> array_series >> array_nums >> phone;
+        break;
     default:
         break;
     }
@@ -33,7 +36,7 @@ Booking::Booking(QDataStream& stream)
 QByteArray Booking::execute(QSqlDatabase &db)
 {
     init();
-    *out << Form::BOOKING;
+    *out << Form::BOOKING << type;
     auto writeResult = [&](QSqlQuery& q)
     {
         q.next();
@@ -43,7 +46,6 @@ QByteArray Booking::execute(QSqlDatabase &db)
     {
     case Type::VIEW:
     {
-        *out << Type::VIEW;
         fillShowingDays(db, CURRENT);
         fillShowingDays(db, WEEK);
         fillShowingDays(db, MONTH);
@@ -51,7 +53,6 @@ QByteArray Booking::execute(QSqlDatabase &db)
     }
     case Type::UPDATE:
     {
-        *out << Type::UPDATE;
         QString strQuery = QString("SELECT updateBooking(%1, %2, \'%3\', \'%4\', %5);").
                 arg(idBooking,
                     room,
@@ -64,7 +65,6 @@ QByteArray Booking::execute(QSqlDatabase &db)
     }
     case Type::INSERT:
     {
-        *out << Type::INSERT;
         QString strQuery = QString("SELECT insertBooking(%1, \'%2\', \'%3\', \'%4\', \'%5\', %6, \'%7\')").arg(room,fullname,phone,checkIn,checkOut,numOfPeople, array_services);
         QSqlQuery q(strQuery, db);
         std::cout << strQuery.toStdString() << std::endl;
@@ -73,7 +73,6 @@ QByteArray Booking::execute(QSqlDatabase &db)
     }
     case Type::DROP:
     {
-        *out << Type::DROP;
         QString strQuery = QString("SELECT deleteBooking(%1);").arg(idBooking);
         std::cout << strQuery.toStdString() << std::endl;
         QSqlQuery q(strQuery, db);
@@ -82,7 +81,6 @@ QByteArray Booking::execute(QSqlDatabase &db)
     }
     case Type::FIND:
     {
-        *out << Type::FIND;
         QString strQuery = QString("SELECT phone, fullname FROM findVisitor(\'%1\');").arg(phone);
         QSqlQuery q(strQuery, db);
         q.next();
@@ -91,7 +89,6 @@ QByteArray Booking::execute(QSqlDatabase &db)
     }
     case Type::CONSTANT:
     {
-        *out << Type::CONSTANT;
         QString strQuery = QString("SELECT typeservice, price FROM service;");
         QSqlQuery q(strQuery, db);
         *out << q.size();
@@ -102,7 +99,7 @@ QByteArray Booking::execute(QSqlDatabase &db)
         break;
     }
     case Type::FIND_ROOM:
-        *out << Type::FIND_ROOM;
+    {
         QString strQuery = QString("SELECT * FROM showTypeRoom(\'%1\', %2, %3, \'%4\', \'%5\', %6)").arg(filter, bath, air, checkIn, checkOut, numOfPeople);
         QSqlQuery q(strQuery, db);
         *out << q.size();
@@ -112,6 +109,15 @@ QByteArray Booking::execute(QSqlDatabase &db)
             *out << q.value(0).toString() << q.value(1).toInt() << q.value(2).toString();
         }
         break;
+    }
+    case Type::ACCEPT:
+    {
+        QString strQuery = QString("SELECT * FROM acceptBooking(%1, %2, %3, %4, %5, %6)").arg(idBooking, countDays, fullname, array_series, array_nums, phone);
+        std::cout << strQuery.toStdString();
+        QSqlQuery q(strQuery, db);
+        writeResult(q);
+        break;
+    }
     }
     return data;
 }

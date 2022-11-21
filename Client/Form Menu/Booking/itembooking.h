@@ -36,8 +36,11 @@ private slots:
 
     void on_comboBox_2_currentIndexChanged(int index);
 
+    void slotPrepareSend(const QByteArray&);
+
 signals:
     void signalBooking(const QByteArray&);
+    void signalBookingRoom(const QByteArray&);
 private:
     Ui::ItemBooking *ui;
     void findRoom();

@@ -29,7 +29,7 @@ void FormBooking::getData(QDataStream &in)
                 auto i = current->text();
                 window.reset(new ItemBooking(dict[i], services));
                 connect(window.get(), SIGNAL(signalBooking(const QByteArray&)), this, SLOT(callSignal(const QByteArray&)));
-                connect(window.get(), SIGNAL(signalBooking(const QByteArray&)), this, SLOT(callFindRoom(const QByteArray&)));
+                connect(window.get(), SIGNAL(signalBookingRoom(const QByteArray&)), this, SLOT(callFindRoom(const QByteArray&)));
                 window->show();
             });
             int countServices;
@@ -63,7 +63,7 @@ void FormBooking::getData(QDataStream &in)
         showBooking(ui->scrollAreaWidgetContents->layout());
         showBooking(ui->scrollAreaWidgetContents_4->layout());
         showBooking(ui->scrollAreaWidgetContents_5->layout());
-        ui->stackedWidget->setCurrentWidget(ui->page);
+        //ui->stackedWidget->setCurrentWidget(ui);
         break;
     }
     case Type::FIND:
@@ -93,18 +93,32 @@ void FormBooking::getData(QDataStream &in)
     }
         break;
     case Type::CONSTANT:
+    {
         int countServices;
         in>>countServices;
         services.resize(countServices);
         for(auto& i: services)
             in >> i.first >> i.second;
         break;
+    }
     case Type::FIND_ROOM:
+    {
         if(isItemBooking) window->slotGetRooms(in);
         else createBooking->slotGetFindRoomResult(in);
         break;
+    }
+    case Type::ACCEPT:
+    {
+        QString info;
+        in >> info;
+        QMessageBox::about(this, "Результат подтверждения брони", info);
+        break;
+    }
     default:
+    {
         qDebug() << "Неизвестный ID:" << type;
+        break;
+    }
     }
 }
 //В out там должна быть о информация о типе запроса.

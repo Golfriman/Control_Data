@@ -1,5 +1,6 @@
 #include "formsignup.h"
 #include "ui_formsignup.h"
+#include <QMessageBox>
 
 FormSignUp::FormSignUp(QWidget *parent) :
     QWidget(parent),
@@ -8,13 +9,6 @@ FormSignUp::FormSignUp(QWidget *parent) :
 
     ui->setupUi(this);
     data.clear();
-    QDataStream out(&data, QIODevice::WriteOnly);
-    out << Form::SIGN_UP << Send::ONE;
-}
-
-void FormSignUp::callSignal(QString filter)
-{
-    emit signalSendToServer(data);
 }
 
 FormSignUp::~FormSignUp()
@@ -24,5 +18,20 @@ FormSignUp::~FormSignUp()
 
 void FormSignUp::slotGetData(QDataStream &in)
 {
-
+    QString info;
+    in>>info;
+    QMessageBox::about(this, "Статус регистрации", info);
 }
+
+void FormSignUp::on_pushButton_clicked()
+{
+        data.clear();
+        QDataStream out(&data, QIODevice::WriteOnly);
+        out << Form::SIGN_UP << Send::ONE << Type::INSERT
+                             << ui->fullname->text()
+                             << ui->passportSeries->text()
+                             << ui->passportNumber->text()
+                             << ui->phone->text();
+        emit signalSendToServer(data);
+}
+

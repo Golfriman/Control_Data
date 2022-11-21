@@ -59,6 +59,9 @@ private:
     std::map<QString, QString> idRooms;
     QString categories;
     std::set<QString> selectedServices;
+    int price;
+    int intCheckIn;
+    int intCheckout;
 };
 
 #endif // FORMCREATEBOOKING_H

@@ -7,7 +7,7 @@ FormReport::FormReport(QWidget *parent) :
     ui(new Ui::FormReport)
 {
     ui->setupUi(this);
-    html = QString("<body>"
+    /*html = QString("<body>"
                    "<p>Отчет за _______</p>"
                    "<p>&nbsp;</p>"
                    "<p>&nbsp;</p>"
@@ -160,7 +160,7 @@ FormReport::FormReport(QWidget *parent) :
                    "<p style=\"text-align:right\"><u>__________</u>&nbsp;Подпись</p>"
                  "</body>").arg(QDate::currentDate().toString("dd.MM.yyyy"));
     ui->html->setText(html);
-    doc.setHtml(html);
+    doc.setHtml(html);*/
 
 }
 

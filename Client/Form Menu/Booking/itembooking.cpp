@@ -148,9 +148,9 @@ void ItemBooking::on_update_clicked()
 
 void ItemBooking::on_accept_clicked()
 {
-    accept.reset(new acceptBooking(nums.toInt()));
-    connect(accept.get(), SIGNAL(signalLiving(const QByteArray&)), this, SLOT(callSignal(const QByteArray&)));
-    //connect(accept.get(), SIGNAL(signalSignUp()), this, SLOT(slotSignUp()));
+    accept.reset(new acceptBooking(id, nums.toInt()));
+    connect(accept.get(), SIGNAL(signalLiving(const QByteArray&)), this, SLOT(slotPrepareSend(const QByteArray&)));
+    connect(accept.get(), SIGNAL(closeMe()), this, SLOT(deleteLater()));
     accept.get()->show();
 }
 
@@ -203,5 +203,10 @@ void ItemBooking::on_comboBox_2_currentIndexChanged(int index)
         filterView = "%";
     else filterView = ui->comboBox_2->currentText();
     findRoom();
+}
+
+void ItemBooking::slotPrepareSend(const QByteArray &data)
+{
+    emit signalBooking(data);
 }
 

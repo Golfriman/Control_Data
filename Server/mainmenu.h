@@ -7,6 +7,7 @@ class MainMenu: public Command
 {
     QSqlQuery *q;
 public:
+    MainMenu()=default;
     MainMenu(QDataStream& stream);
     QByteArray execute(QSqlDatabase& db)override;
     ~MainMenu();
