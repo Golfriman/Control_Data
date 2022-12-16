@@ -18,18 +18,42 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="styleSheet">
-      <string notr="true">font-style: normal;
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="styleSheet">
+        <string notr="true">font-style: normal;
 font-weight: 700;
 font-size: 24px;
 line-height: 30px;
 letter-spacing: 0.3px;</string>
-     </property>
-     <property name="text">
-      <string>Заселение</string>
-     </property>
-    </widget>
+       </property>
+       <property name="text">
+        <string>Заселение</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Архив заселений</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QScrollArea" name="scrollArea">
@@ -45,7 +69,7 @@ letter-spacing: 0.3px;</string>
         <x>0</x>
         <y>0</y>
         <width>681</width>
-        <height>492</height>
+        <height>490</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2"/>

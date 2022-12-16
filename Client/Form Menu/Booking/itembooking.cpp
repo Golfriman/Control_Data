@@ -3,7 +3,7 @@
 #include <QScopedPointer>
 #include "ui_itembooking.h"
 
-ItemBooking::ItemBooking(std::vector<QString> &v, const std::vector<std::pair<QString, QString>> &services, QWidget *parent) :
+ItemBooking::ItemBooking(QString &idEmployee, std::vector<QString> &v, const std::vector<std::pair<QString, QString> > &services, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ItemBooking)
 {
@@ -14,8 +14,6 @@ ItemBooking::ItemBooking(std::vector<QString> &v, const std::vector<std::pair<QS
     filterBath = "null";
     filterAir = "null";
     filterView = "%";
-    ui->checkBox->setCheckState(Qt::PartiallyChecked);
-    ui->checkBox_2->setCheckState(Qt::PartiallyChecked);
     this->id = v[0];
     this->FIO = v[3];
     this->idV = v[2];
@@ -59,7 +57,7 @@ ItemBooking::ItemBooking(std::vector<QString> &v, const std::vector<std::pair<QS
             }
         });
     }
-
+    this->idEmployee = idEmployee;
     if(checkIn != QDate::currentDate().toString("yyyy-MM-dd"))
         ui->accept->setEnabled(false);
 
@@ -72,8 +70,8 @@ ItemBooking::~ItemBooking()
 
 void ItemBooking::slotGetRooms(QDataStream &in)
 {
-    QLayoutItem* itm;
-    while((itm = ui->scrollAreaWidgetContents->layout()->takeAt(0))!= nullptr)
+    /*QLayoutItem* itm;
+    while((itm = ui->scrollAreaWidgetContents_2->layout()->takeAt(0))!= nullptr)
     {
         delete itm->widget();
         delete itm;
@@ -84,10 +82,19 @@ void ItemBooking::slotGetRooms(QDataStream &in)
     {
         int price;
         QString category;
-        in >> category >> price;
-        if(prices.find(category) == prices.end()) prices.emplace(category, price);
-        ui->scrollAreaWidgetContents->layout()->addWidget(new QRadioButton(category));
-    }
+        QString idRoom;
+        in >> category >> price >> idRoom;
+        if(prices.find(category) == prices.end())
+        {
+            prices.emplace(category, price);
+        }
+        else {
+            idRooms[category] = idRoom;
+        }
+        auto itm = new QRadioButton(category);
+        connect(itm, SIGNAL(clicked()), this, SLOT(slotSelectTypeRoom()));
+        ui->scrollAreaWidgetContents->layout()->addWidget(itm);
+    }*/
 }
 
 void ItemBooking::on_pushButton_2_clicked()
@@ -121,7 +128,7 @@ void ItemBooking::on_delete_2_clicked()
 {
     QByteArray data;
     QDataStream out(&data, QIODevice::WriteOnly);
-    out << Send::ALL << Type::DROP << id;
+    out << Send::ADMINS << Type::DROP << id;
     emit signalBooking(data);
     this->hide();
 }
@@ -132,8 +139,8 @@ void ItemBooking::on_update_clicked()
     QByteArray data;
     QDataStream out(&data, QIODevice::WriteOnly);
 
-    out << Send::ALL << Type::UPDATE <<
-           id << idV << idRoom << checkIn << checkOut << nums;
+    out << Send::ADMINS << Type::UPDATE <<
+           id << idV.toInt() << idRoom << checkIn << checkOut << nums;
     QString _data;
     for(const auto& i: selectingServices)
         _data += i + '|';
@@ -148,7 +155,7 @@ void ItemBooking::on_update_clicked()
 
 void ItemBooking::on_accept_clicked()
 {
-    accept.reset(new acceptBooking(id, nums.toInt()));
+    accept.reset(new acceptBooking(idEmployee, id, nums.toInt()));
     connect(accept.get(), SIGNAL(signalLiving(const QByteArray&)), this, SLOT(slotPrepareSend(const QByteArray&)));
     connect(accept.get(), SIGNAL(closeMe()), this, SLOT(deleteLater()));
     accept.get()->show();
@@ -176,7 +183,7 @@ void ItemBooking::findRoom()
     QByteArray data;
     QDataStream out(&data, QIODevice::WriteOnly);
     out << Send::ONE << Type::FIND_ROOM <<ui->comboBox->currentText() <<  filterView << filterBath << filterAir << ui->checkInData->text() << ui->checkOutData->text();
-    emit signalBooking(data);
+    emit signalBookingRoom(data);
 }
 
 
@@ -199,10 +206,7 @@ void ItemBooking::on_checkBox_2_stateChanged(int arg1)
 
 void ItemBooking::on_comboBox_2_currentIndexChanged(int index)
 {
-    if(index == 0)
-        filterView = "%";
-    else filterView = ui->comboBox_2->currentText();
-    findRoom();
+
 }
 
 void ItemBooking::slotPrepareSend(const QByteArray &data)

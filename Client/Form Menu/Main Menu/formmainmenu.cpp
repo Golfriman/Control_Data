@@ -39,7 +39,7 @@ void FormMainMenu::createChart()
     chart->createDefaultAxes();
     chart->axes(Qt::Horizontal).first()->setRange(0, 30);
     chart->axes(Qt::Horizontal).first()->setTitleText("Активность за последние 30 дней");
-    chart->axes(Qt::Vertical).first()->setRange(0, 100);
+    chart->axes(Qt::Vertical).first()->setRange(0, 26);
     chart->axes(Qt::Vertical).first()->setTitleText("Количество занятых номеров");
     chart->setAnimationDuration(1000);
     chart->setAnimationOptions(QChart::SeriesAnimations);
@@ -64,9 +64,10 @@ void FormMainMenu::slotGetData(QDataStream &in)
     in >> size;
     for(int i = 0; i < size;i++)
     {
-        int y;
+        int x,y;
         in >> y;
-        seriesLiving->append(i, y);
+        in >> x;
+        seriesLiving->append(x, y);
     }
     in >> money;
     ui->money->setText(money);

@@ -1,4 +1,5 @@
 #include "signup.h"
+#include <iostream>
 
 SignUp::SignUp(QDataStream& stream)
 {
@@ -13,7 +14,8 @@ QByteArray SignUp::execute(QSqlDatabase &db)
     {
     case Type::INSERT:
     {
-        QString strQuery = QString("SELECT addVisitor(%1, %2, %3, %4").arg(fullname, passportSeries, passportNumber, phone);
+        QString strQuery = QString("SELECT addVisitor(\'%1\', %2, %3, \'%4\')").arg(fullname, passportSeries, passportNumber, phone);
+        std::cout << strQuery.toStdString();
         QSqlQuery q(strQuery, db);
         q.next();
         *out << q.value(0).toString();

@@ -1,4 +1,4 @@
-    #include "client.h"
+#include "client.h"
 #include "qcoreapplication.h"
 
 Client::Client(QString address, uint16_t port, QWidget *parent)
@@ -10,7 +10,7 @@ Client::Client(QString address, uint16_t port, QWidget *parent)
     {
         authorization->showStatusConnection(false, socket->errorString());
     }
-    setFocusWindow(authorization);
+    setFocusWindow(authorization.get());
     createTrayMenu();
     createTrayIcon();
     createWorker();
@@ -19,8 +19,6 @@ Client::Client(QString address, uint16_t port, QWidget *parent)
 Client::~Client()
 {
     delete socket;
-    delete authorization;
-    delete menu;
     delete trayIcon;
     delete trayMenu;
 }
@@ -37,7 +35,7 @@ void Client::createSocket(QString address, uint16_t port)
 
 void Client::createFormAuthorization()
 {
-    authorization  = new FormAuthorization;
+    authorization.reset(new FormAuthorization);
     connectSocketToAuthorization();
     connectAuthorizationToSocket();
     authorization->setWindowTitle("Dashboard - Авторизация");
@@ -45,29 +43,30 @@ void Client::createFormAuthorization()
 
 void Client::connectSocketToAuthorization()
 {
-    connect(this, SIGNAL(signalAuthorization(QDataStream&)), authorization, SLOT(update(QDataStream&)));
+    connect(this, SIGNAL(signalAuthorization(QDataStream&)), authorization.get(), SLOT(update(QDataStream&)));
 }
 
 void Client::connectAuthorizationToSocket()
 {
-    connect(authorization, SIGNAL(request(QByteArray&)), this, SLOT(slotSendToServer(QByteArray&)));
-    connect(authorization, SIGNAL(login(const QString&, const QString&)), this, SLOT(slotLogin(const QString&, const QString&)));
+    connect(authorization.get(), SIGNAL(request(QByteArray&)), this, SLOT(slotSendToServer(QByteArray&)));
+    connect(authorization.get(), SIGNAL(login(const QString&)), this, SLOT(slotLogin(const QString&)));
 }
 
 void Client::setFocusWindow(QMainWindow *w)
 {
-    w->show();
     window = w;
+    window->show();
 }
 
-void Client::createFormMenu(const QString &firstName, const QString &secondName)
+void Client::createFormMenu(const QString &idEmployee, const QString& fullname)
 {
-    menu = new FormMenu(firstName, secondName);
-    menu->setWindowTitle("Dashboard - Главное меню");
+    menu.reset(new FormMenu(idEmployee, fullname));
+    setFocusWindow(menu.get());
+    menu->setWindowTitle("Dashboard - Главное меню    Пользователь " + fullname);
     connectSocketToFormMenuWidgets();
     connectFormMenuWidgetsToSocket();
     createLogoutAction();
-    connect(menu, SIGNAL(signalClose()), this, SLOT(slotActionShowHide()));
+    connect(menu.get(), SIGNAL(signalClose()), this, SLOT(slotActionShowHide()));
 }
 
 void Client::createTrayMenu()
@@ -102,14 +101,14 @@ void Client::createTrayIcon()
 
 void Client::connectSocketToFormMenuWidgets()
 {
-    connect(this, SIGNAL(signalMainMenu(QDataStream&)), menu, SLOT(slotMainMenu(QDataStream&)));
-    connect(this, SIGNAL(signalEmployee(QDataStream&)), menu, SLOT(slotEmployee(QDataStream&)));
-    connect(this, SIGNAL(signalRooms(QDataStream&)),    menu, SLOT(slotRooms(QDataStream&)));
-    connect(this, SIGNAL(signalCheckIn(QDataStream&)),  menu, SLOT(slotCheckIn(QDataStream&)));
-    connect(this, SIGNAL(signalBooking(QDataStream&)),  menu, SLOT(slotBooking(QDataStream&)));
-    connect(this, SIGNAL(signalSignUp(QDataStream&)),   menu, SLOT(slotSignUp(QDataStream&)));
-    connect(this, SIGNAL(signalReport(QDataStream&)),   menu, SLOT(slotReport(QDataStream&)));
-    connect(this, SIGNAL(signalSettings(QDataStream&)), menu, SLOT(slotSettings(QDataStream&)));
+    connect(this, SIGNAL(signalMainMenu(QDataStream&)), menu.get(), SLOT(slotMainMenu(QDataStream&)));
+    connect(this, SIGNAL(signalEmployee(QDataStream&)), menu.get(), SLOT(slotEmployee(QDataStream&)));
+    connect(this, SIGNAL(signalRooms(QDataStream&)),    menu.get(), SLOT(slotRooms(QDataStream&)));
+    connect(this, SIGNAL(signalCheckIn(QDataStream&)),  menu.get(), SLOT(slotCheckIn(QDataStream&)));
+    connect(this, SIGNAL(signalBooking(QDataStream&)),  menu.get(), SLOT(slotBooking(QDataStream&)));
+    connect(this, SIGNAL(signalSignUp(QDataStream&)),   menu.get(), SLOT(slotSignUp(QDataStream&)));
+    connect(this, SIGNAL(signalReport(QDataStream&)),   menu.get(), SLOT(slotReport(QDataStream&)));
+    connect(this, SIGNAL(signalSettings(QDataStream&)), menu.get(), SLOT(slotSettings(QDataStream&)));
 }
 
 void Client::connectFormMenuWidgetsToSocket()
@@ -175,11 +174,11 @@ void Client::slotSendToServer(QByteArray& out)
     socket->write(out);
 }
 
-void Client::slotLogin(const QString &firstName, const QString &secondName)
+void Client::slotLogin(const QString& idEmployee)
 {
     authorization->hide();
-    createFormMenu(firstName, secondName);
-    setFocusWindow(menu);
+    createFormMenu(idEmployee, authorization->getFullname());
+
 }
 
 void Client::slotShowHide()
@@ -216,19 +215,19 @@ void Client::slotLogoutSystem()
 {
     if(menu)
     {
-        delete menu;
-        setFocusWindow(authorization);
+        menu->hide();
+        setFocusWindow(authorization.get());
         removeLogoutAction();
     }
 }
 
 void Client::disconnectToServer()
 {
-    if(window == authorization)
+    if(window == authorization.get())
     {
         authorization->showStatusConnection(false, socket->errorString());
     }
-    else if(window == menu)
+    else if(window == menu.get())
     {
         menu->showStatusConnection(false, socket->errorString());
     }
@@ -237,11 +236,11 @@ void Client::disconnectToServer()
 
 void Client::connectToServer()
 {
-    if(window == authorization)
+    if(window == authorization.get())
     {
         authorization->showStatusConnection(true);
     }
-    else if(window == menu)
+    else if(window == menu.get())
     {
         menu->showStatusConnection(true);
     }

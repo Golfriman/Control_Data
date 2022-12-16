@@ -15,7 +15,7 @@ class FormBooking : public QWidget
     Q_OBJECT
 
 public:
-    explicit FormBooking(QWidget *parent = nullptr);
+    explicit FormBooking(QString& idEmployee, QWidget *parent = nullptr);
     void getData(QDataStream&);
     ~FormBooking();
 public slots:
@@ -30,6 +30,7 @@ signals:
     void signalSendToServer(QByteArray&);
     void signalSignUp();
 private:
+    QString idEmployee;
     bool isItemBooking;
     std::vector<std::pair<QString, QString>> services;
     std::vector<QString> price;

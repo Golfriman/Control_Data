@@ -24,7 +24,7 @@ private:
     void connectSocketToAuthorization();
     void connectAuthorizationToSocket();
     void setFocusWindow(QMainWindow* w);
-    void createFormMenu(const QString& firstName, const QString& secondName);
+    void createFormMenu(const QString& idEmployee, const QString& fullname);
     void createTrayMenu();
     void createTrayIcon();
     void connectSocketToFormMenuWidgets();
@@ -51,7 +51,7 @@ signals:
 public slots:
     void slotReadyRead();
     void slotSendToServer(QByteArray&);
-    void slotLogin(const QString&, const QString&);
+    void slotLogin(const QString&idEmployee);
     void slotShowHide();
     void slotActionShowHide();
     void slotQuit();
@@ -72,8 +72,8 @@ private:
     QTcpSocket* socket;
 
     QMainWindow* window;
-    FormMenu* menu;
-    FormAuthorization *authorization;
+    QScopedPointer<FormMenu> menu;
+    QScopedPointer<FormAuthorization> authorization;
 
     QIcon* icon;
 

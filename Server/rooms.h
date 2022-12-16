@@ -9,6 +9,9 @@ public:
     Rooms(QDataStream& stream);
     QString createViewQuery();
     QByteArray execute(QSqlDatabase& db) override;
+private:
+    QString status;
+    QString idRoom;
 };
 
 #endif // ROOMS_H

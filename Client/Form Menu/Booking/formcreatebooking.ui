@@ -11,16 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Создание брони</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_10">
-   <item>
-    <widget class="QLabel" name="label_9">
-     <property name="text">
-      <string>Создание брони</string>
-     </property>
-    </widget>
-   </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -180,7 +173,7 @@
                 </item>
                 <item>
                  <property name="text">
-                  <string>На двор</string>
+                  <string>Во двор</string>
                  </property>
                 </item>
                </widget>
@@ -288,7 +281,7 @@
            <x>0</x>
            <y>0</y>
            <width>743</width>
-           <height>93</height>
+           <height>120</height>
           </rect>
          </property>
         </widget>

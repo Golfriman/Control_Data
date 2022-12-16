@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
@@ -40,6 +40,13 @@ letter-spacing: 0.3px;
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>Уволить сотрудника</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
     </layout>
@@ -58,27 +65,55 @@ QListView
 </string>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
        <string>Все</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QScrollArea" name="scrollArea">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Должность</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="position">
+           <item>
+            <property name="text">
+             <string>Любая</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Администратор</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Техник</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Охраник</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Горничная</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="scrollArea_2">
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -87,48 +122,11 @@ QListView
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>663</width>
-            <height>447</height>
+            <width>641</width>
+            <height>390</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_5"/>
-         </widget>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>Сегодня работают</string>
-      </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QScrollArea" name="scrollArea_2">
-         <property name="widgetResizable">
-          <bool>true</bool>
-         </property>
-         <widget class="QWidget" name="online">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>663</width>
-            <height>447</height>
-           </rect>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4"/>
          </widget>
         </widget>
        </item>
@@ -138,34 +136,47 @@ QListView
       <attribute name="title">
        <string>Журнал выполненной работы</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QScrollArea" name="scrollArea_3">
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Дата просмотра</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <item>
+            <widget class="QDateEdit" name="date"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="text">
+              <string>Календарь</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QScrollArea" name="scrollArea">
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
-         <widget class="QWidget" name="logWork">
+         <widget class="QWidget" name="log">
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>663</width>
-            <height>447</height>
+            <width>641</width>
+            <height>385</height>
            </rect>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3"/>
+          <layout class="QVBoxLayout" name="verticalLayout_4"/>
          </widget>
         </widget>
        </item>

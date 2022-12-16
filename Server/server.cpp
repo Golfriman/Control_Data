@@ -36,11 +36,11 @@ Server::~Server()
 {
 }
 
-Command *Server::createConcreteCommand(int idCommand, QDataStream &in)
+Command *Server::createConcreteCommand(int idCommand, QDataStream &in, QTcpSocket* socket)
 {
     switch(idCommand)
     {
-    case Form::AUTHORIZATION:    return new Authorization(in);
+    case Form::AUTHORIZATION:    return new Authorization(in, type, admins, maid, socket);
     case Form::MAIN_MENU:        return new MainMenu(in);
     case Form::EMPLOYEE:         return new Employee(in);
     case Form::BOOKING:          return new Booking(in);
@@ -62,15 +62,44 @@ void Server::slotChangeStatusRoom()
 
 void Server::slotDisconnectClient()
 {
-    auto itm = (QTcpSocket*)sender();
-    const auto it = std::find_if(sockets.begin(), sockets.end(), [&itm](QTcpSocket* value)
+    auto findItm = [](auto itm, auto& list)->bool
     {
-        return value == itm;
-    });
-    sockets.erase(it);
-    delete itm;
-    itm = nullptr;
+        const auto it = std::find_if(list.begin(), list.end(), [&itm](QTcpSocket* value)
+        {
+            return value == itm;
+        });
+        if(it!=list.end())
+        {
+            list.erase(it);
+            delete itm;
+            itm = nullptr;
+            return true;
+        }
+        return false;
+    };
+    if(findItm((QTcpSocket*)sender(), admins))
+    {
+        return;
+    }
+    else if(findItm((QTcpSocket*)sender(), maid))
+    {
+        return;
+    }
+    else qDebug() << "Произошла ошибка разрыва соединения";
+}
 
+void Server::createMainMenuCommand()
+{
+    QByteArray data;
+    QDataStream in(&data, QIODevice::ReadWrite);
+    in << Type::VIEW;
+    Command* command = new MainMenu(in);
+    data.clear();
+    data = command->execute(db);
+    for(auto& client: admins)
+    {
+        client->write(data);
+    }
 }
 
 void Server::incomingConnection(qintptr socketDescriptor)
@@ -82,7 +111,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
     connect(socket, &QTcpSocket::readyRead, this, &Server::slotReadyRead);
     connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
     connect(socket, SIGNAL(disconnected()), this, SLOT(slotDisconnectClient()));
-    sockets.push_back(std::move(socket));
+    unknown.push_back(std::move(socket));
 }
 
 void Server::slotReadyRead()
@@ -94,19 +123,36 @@ void Server::slotReadyRead()
     while(!in.atEnd())
     {
         Command* command;
-        int idCommand, type;
+        int idCommand;
         in >> idCommand >> type;
         qDebug() << "ID COMMAND: " << idCommand;
-        command = createConcreteCommand(idCommand, in);
+        command = createConcreteCommand(idCommand, in, socket_client);
+        //connect(command, SIGNAL(signalChangeMainMenu()), this, SLOT(createMainMenuCommand()));
         if(command == nullptr)
         {
             continue;
         }
         data.clear();
         data = command->execute(db);
-        if (type == Send::ONE)
+        if (type == Send::ONE || type==Send::ADMIN)
         {
             socket_client->write(data);
+        }
+        if (type ==Send::ADMINS)
+        {
+            socket_client->write(data);//Информация о том, что операция выполненна...
+
+            data.clear();
+            QByteArray data2;
+            QDataStream request(&data2, QIODevice::ReadWrite);
+            request << Type::VIEW;
+            Command* command2 = createConcreteCommand(idCommand, request, socket_client);
+            data = command2->execute(db);
+            for(auto& client: admins)
+            {
+                client->write(data/*Обновленные данные*/);
+            }
+            delete command2;
         }
         else if(type == Send::ALL)
         {
@@ -116,9 +162,9 @@ void Server::slotReadyRead()
             QByteArray data2;
             QDataStream request(&data2, QIODevice::ReadWrite);
             request << Type::VIEW;
-            Command* command2 = createConcreteCommand(idCommand, request);
+            Command* command2 = createConcreteCommand(idCommand, request, socket_client);
             data = command2->execute(db);
-            for(auto& client: sockets)
+            for(auto& client: unknown)
             {
                 client->write(data/*Обновленные данные*/);
             }

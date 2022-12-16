@@ -31,6 +31,7 @@ private:
     QString array_nums;
     QString array_series;
     QString countDays;
+    QString idEmployee;
 };
 
 #endif // BOOKING_H

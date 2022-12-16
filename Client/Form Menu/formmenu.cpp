@@ -2,17 +2,20 @@
 #include "ui_formmenu.h"
 #include <QtWidgets>
 #include <iostream>
-FormMenu::FormMenu(const QString &firstName, const QString &secondName, QWidget *parent) :
+FormMenu::FormMenu(const QString& idEmployee, const QString& fullname, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::FormMenu)
+    ui(new Ui::FormMenu),
+    idEmployee(idEmployee)
 {
-    this->setWindowTitle("Dashboard - Главное меню");
+    this->setWindowTitle("Dashboard - Главное меню  Пользователь: " + fullname);
     ui->setupUi(this);
     //ui->username->setText(firstName + " " + secondName);
     lastClick = ui->mainMenu;
     createPages();
     fillList();
     addWidgetsInStack();
+    ui->settings->hide();
+    this->fullname = fullname;
 
 }
 
@@ -108,17 +111,17 @@ void FormMenu::addStack(QWidget *w)
 void FormMenu::createPages()
 {
     mainMenu = new FormMainMenu(this);
-    employee = new FormEmployee(this);
+    employee = new FormEmployee(idEmployee, this);
     rooms = new FormRooms(this);
-    checkIn = new FormCheckIn(this);
+    checkIn = new FormCheckIn(idEmployee, this);
     signUp = new FormSignUp(this);
-    booking = new FormBooking(this);
+    booking = new FormBooking(idEmployee, this);
     connect(booking, &FormBooking::signalSignUp, this, [&](){
         ui->stackedWidget->setCurrentWidget(signUp);
         ui->booking->setChecked(false);
         ui->signUp->setChecked(true);
     });
-    report = new FormReport(this);
+    report = new FormReport(idEmployee, this);
     settings = new FormSettings(this);
 }
 
@@ -222,49 +225,49 @@ void FormMenu::doNonChecked()
 
 void FormMenu::on_mainMenu_clicked()
 {
-    this->setWindowTitle("Dashboard - Главное меню");
+    this->setWindowTitle("Dashboard - Главное меню  Пользователь: " + fullname);
     animateNext(mainMenu);
 }
 
 void FormMenu::on_booking_clicked()
 {
-    this->setWindowTitle("Dashboard - Бронирование");
+    this->setWindowTitle("Dashboard - Бронирование  Пользователь: " + fullname);
     animateNext(booking);
 }
 
 void FormMenu::on_employee_clicked()
 {
-    this->setWindowTitle("Dashboard - Сотрудники");
+    this->setWindowTitle("Dashboard - Сотрудники  Пользователь: " + fullname);
     animateNext(employee);
 }
 
 void FormMenu::on_rooms_clicked()
 {
-    this->setWindowTitle("Dashboard - Номера");
+    this->setWindowTitle("Dashboard - Номера  Пользователь: " + fullname);
     animateNext(rooms);
 }
 
 void FormMenu::on_signUp_clicked()
 {
-    this->setWindowTitle("Dashboard - Регистрация");
+    this->setWindowTitle("Dashboard - Регистрация  Пользователь: " + fullname);
     animateNext(signUp);
 }
 
 void FormMenu::on_checkIn_clicked()
 {
-    this->setWindowTitle("Dashboard - Заселение");
+    this->setWindowTitle("Dashboard - Заселение  Пользователь: " + fullname);
     animateNext(checkIn);
 }
 
 void FormMenu::on_report_clicked()
 {
-    this->setWindowTitle("Dashboard - Отчет");
+    this->setWindowTitle("Dashboard - Отчет  Пользователь: " + fullname);
     animateNext(report);
 }
 
 void FormMenu::on_settings_clicked()
 {
-    this->setWindowTitle("Dashboard - Настройки");
+    this->setWindowTitle("Dashboard - Настройки  Пользователь: " + fullname);
     animateNext(settings);
 }
 

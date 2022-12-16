@@ -12,7 +12,7 @@ class acceptBooking : public QWidget
     Q_OBJECT
 
 public:
-    explicit acceptBooking(QString id, int num, QWidget *parent = nullptr);
+    explicit acceptBooking(QString idEmployee, QString id, int num, QWidget *parent = nullptr);
     ~acceptBooking();
 
 private slots:
@@ -30,6 +30,7 @@ private:
     std::vector<QGroupBox*> hor;
     Ui::acceptBooking *ui;
     QString id;
+    QString idEmployee;
 };
 
 #endif // ACCEPTBOOKING_H

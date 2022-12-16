@@ -6,11 +6,17 @@
 class CheckIn : public Command
 {
 public:
+    CheckIn(int command);
     CheckIn(QDataStream& stream);
     QByteArray execute(QSqlDatabase& db) override;
 private:
+    QString fullname;
+    QString series;
+    QString number;
     QString id;
     QString days;
+    QString services;
+    QString empl;
 
 };
 

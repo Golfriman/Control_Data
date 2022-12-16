@@ -12,7 +12,7 @@ class ItemWorkHotel : public QWidget
     Q_OBJECT
 
 public:
-    explicit ItemWorkHotel(QString& time, QString& namework, QWidget *parent = nullptr);
+    explicit ItemWorkHotel(QString& time, QString& namework, QString& room, QWidget *parent = nullptr);
     ~ItemWorkHotel();
 
 private:

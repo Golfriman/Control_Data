@@ -15,7 +15,9 @@ enum Form{
 
 enum Send{
     ONE,
-    ALL
+    ALL,
+    ADMINS,
+    ADMIN
 };
 
 enum Type
@@ -30,7 +32,15 @@ enum Type
     FIND_ROOM,
     SHOW_CHECK_IN,
     CHECK_OUT_FROM,
-    PAY
+    PAY,
+    FIND_WORK,
+    FIND_EMPLOYEE,
+    FIND_EMPLOYEE_FULLNAME,
+    COMPLETE_WORK,
+    FILTER_ROOMS,
+    CHANGE_CLEAN,
+    ARCHIVE,
+    ADD
 };
 
 #endif // CONST_H

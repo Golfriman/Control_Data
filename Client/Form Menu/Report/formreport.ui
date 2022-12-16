@@ -49,6 +49,13 @@ letter-spacing: 0.3px;
     </widget>
    </item>
    <item>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="text">
+      <string>Обновить</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Предпросмотр документа</string>
@@ -77,7 +84,7 @@ letter-spacing: 0.3px;
            <x>0</x>
            <y>0</y>
            <width>397</width>
-           <height>231</height>
+           <height>195</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">

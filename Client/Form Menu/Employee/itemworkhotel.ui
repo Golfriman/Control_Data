@@ -30,6 +30,13 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QLabel" name="room">
+       <property name="text">
+        <string>Где</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

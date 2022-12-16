@@ -41,6 +41,8 @@ private slots:
     void slotSelectTypeRoom();
     void on_numPeople_currentIndexChanged(int index);
 
+    void on_filterView_currentTextChanged(const QString &arg1);
+
 signals:
     void signalSignUp();
     void signalCreateBooking(const QByteArray&);
@@ -60,6 +62,7 @@ private:
     QString categories;
     std::set<QString> selectedServices;
     int price;
+    int sumService;
     int intCheckIn;
     int intCheckout;
 };

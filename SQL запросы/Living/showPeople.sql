@@ -8,3 +8,5 @@ BEGIN
 END; $$ LANGUAGE PLPGSQL;
 
 SELECT * FROM showPeople(10);
+
+SELECT * FROM visitor WHERE fullname LIKE 'Грошев%';

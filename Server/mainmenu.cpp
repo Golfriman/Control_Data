@@ -1,6 +1,11 @@
 #include "mainmenu.h"
 #include <iostream>
 
+MainMenu::MainMenu(int command)
+{
+    type = command;
+}
+
 MainMenu::MainMenu(QDataStream& stream)
 {
     stream >> type;
@@ -18,17 +23,10 @@ QByteArray MainMenu::execute(QSqlDatabase& db)
             q.value(2).toString() << //забронировано
             q.value(3).toString();   //просроченная аренда
     QSqlQuery q2("SELECT * FROM statisticCheckInHotel();", db);
-    q2.next();
-    *out << 31;
-    for(int i = 0; i < 31; i++)
+    *out << q2.size();
+    while(q2.next())
     {
-        if(q2.value(1).toInt() == i)
-        {
-            *out << q2.value(0).toInt();
-            q2.next();
-        }
-        else
-            *out << 0;
+        *out << q2.value(0).toInt() << q2.value(1).toInt();
     }
     QSqlQuery q3("SELECT sumMoneyToday()", db);
     q3.next();

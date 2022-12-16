@@ -22,7 +22,7 @@ class FormMenu : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit FormMenu(const QString& firstName, const QString& secondName, QWidget *parent = nullptr);
+    explicit FormMenu(const QString& idEmployee, const QString &fullname, QWidget *parent = nullptr);
     void showStatusConnection(bool ans, const QString& str = "");
     std::list<QWidget*> &getListWidget();
     FormMainMenu *getMainMenu();
@@ -78,6 +78,8 @@ private:
     FormSignUp* signUp;
     FormReport* report;
     FormSettings* settings;
+    QString idEmployee;
+    QString fullname;
 
     QPushButton* lastClick;
     QByteArray data;

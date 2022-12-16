@@ -13,6 +13,9 @@ protected:
     QDataStream* out;
     int type;
     void init();
+    QString convert(QString data);
+signals:
+    void signalChangeMainMenu();
 public:
     Command();
     virtual QByteArray execute(QSqlDatabase&)=0;

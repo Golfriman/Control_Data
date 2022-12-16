@@ -1,10 +1,12 @@
 #include "formbooking.h"
 #include "ui_formbooking.h"
-FormBooking::FormBooking(QWidget *parent) :
+FormBooking::FormBooking(QString& idEmployee, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FormBooking)
 {
     ui->setupUi(this);
+    ui->stackedWidget->setCurrentWidget(ui->page);
+    this->idEmployee = idEmployee;
 }
 
 void FormBooking::getData(QDataStream &in)
@@ -27,7 +29,7 @@ void FormBooking::getData(QDataStream &in)
             connect(btn, &QPushButton::clicked, this, [&](){
                 auto current = (QPushButton*)sender();
                 auto i = current->text();
-                window.reset(new ItemBooking(dict[i], services));
+                window.reset(new ItemBooking(idEmployee, dict[i], services));
                 connect(window.get(), SIGNAL(signalBooking(const QByteArray&)), this, SLOT(callSignal(const QByteArray&)));
                 connect(window.get(), SIGNAL(signalBookingRoom(const QByteArray&)), this, SLOT(callFindRoom(const QByteArray&)));
                 window->show();
@@ -123,8 +125,7 @@ void FormBooking::getData(QDataStream &in)
 }
 //В out там должна быть о информация о типе запроса.
 void FormBooking::callSignal(const QByteArray& out)
-{  
-    qDebug() << "ЗДАРОВА Я ТУТ";
+{
     isItemBooking = false;
     data.clear();
     QDataStream outBooking(&data, QIODevice::WriteOnly);
@@ -157,8 +158,8 @@ void FormBooking::on_pushButton_clicked()
 {
     createBooking.reset(new FormCreateBooking(services));
     connect(createBooking.get(), SIGNAL(signalCreateBooking(const QByteArray&)), this, SLOT(callSignal(const QByteArray&)));
-    // connect(createBooking.get(), SIGNAL(signalSignUp()), createBooking.get(), SLOT(deleteLater()));
-    // connect(createBooking.get(), SIGNAL(signalSignUp()), this, SLOT(slotSignUp()));
+    //connect(createBooking.get(), SIGNAL(signalSignUp()), createBooking.get(), SLOT(deleteLater()));
+    connect(createBooking.get(), SIGNAL(signalSignUp()), this, SLOT(slotSignUp()));
     createBooking->show();
 }
 

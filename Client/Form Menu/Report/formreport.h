@@ -14,7 +14,7 @@ class FormReport : public QWidget
     Q_OBJECT
 
 public:
-    explicit FormReport(QWidget *parent = nullptr);
+    explicit FormReport(QString &idEmployee, QWidget *parent = nullptr);
     ~FormReport();
 public slots:
     void slotGetData(QDataStream& in);
@@ -24,7 +24,10 @@ signals:
 private slots:
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
+    QString doсument;
     QTextDocument doc;
     QByteArray data;
     Ui::FormReport *ui;

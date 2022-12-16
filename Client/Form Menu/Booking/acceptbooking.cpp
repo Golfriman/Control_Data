@@ -2,7 +2,7 @@
 #include "ui_acceptbooking.h"
 #include "../const.h"
 
-acceptBooking::acceptBooking(QString id, int num, QWidget *parent) :
+acceptBooking::acceptBooking(QString idEmployee, QString id, int num, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::acceptBooking)
 {
@@ -40,6 +40,7 @@ acceptBooking::acceptBooking(QString id, int num, QWidget *parent) :
         ui->layout->addWidget(hor[i]);
     }
     this->id = id;
+    this->idEmployee = idEmployee;
 
 }
 
@@ -50,6 +51,16 @@ acceptBooking::~acceptBooking()
 
 void acceptBooking::on_pushButton_clicked()
 {
+    if(!ui->countDays->text().toInt())
+    {
+        QMessageBox::about(this, "Заселение", "Не указано количество оплаченных дней");
+        return;
+    }
+    if(ui->countDays->text().toInt() < 0 || ui->countDays->text().toInt() > 31)
+    {
+        QMessageBox::about(this, "Заселение", "Некорректные данные оплаченных дней");
+        return;
+    }
     qDebug() << "LIVING";
     QString arrayFIO = "'{";
     QString arrayPassSeries= "'{";
@@ -57,16 +68,24 @@ void acceptBooking::on_pushButton_clicked()
     QString arrayPhone= "'{";
 
     for(auto& i: fullname)
+    {
+        if(i.second->text().isEmpty())
+        {
+          QMessageBox::about(this, "Заселение", "Забыли ввести ФИО посетителя " + QString::number(i.first+1));
+          return;
+        }
         arrayFIO +='"' + i.second->text() + '"' + ',';
+    }
     arrayFIO[arrayFIO.size()-1] = '}';
+    arrayFIO+="\'";
 
     for(auto& i: seriesPass)
-        arrayPassSeries += i.second->text() + ",";
+        arrayPassSeries += (i.second->text().isEmpty()?"null":i.second->text()) + ",";
     arrayPassSeries[arrayPassSeries.size()-1] = '}';
     arrayPassSeries+="'";
 
     for(auto& i: numberPass)
-        arrayPassNumber += i.second->text() + ",";
+        arrayPassNumber += (i.second->text().isEmpty()?"null":i.second->text()) + ",";
     arrayPassNumber[arrayPassNumber.size()-1] = '}';
     arrayPassNumber+="'";
 
@@ -81,7 +100,7 @@ void acceptBooking::on_pushButton_clicked()
     qDebug() << arrayPhone;
     QByteArray data;
     QDataStream out(&data, QIODevice::WriteOnly);
-    out <<  Send::ALL << Type::ACCEPT << id << ui->countDays->text() << arrayFIO << arrayPassSeries << arrayPassNumber << arrayPhone;
+    out <<  Send::ADMINS << Type::ACCEPT << idEmployee <<  id << ui->countDays->text() << arrayFIO << arrayPassSeries << arrayPassNumber << arrayPhone;
     emit this->signalLiving(data);
     emit closeMe();
     deleteLater();

@@ -14,7 +14,7 @@ class ItemBooking : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ItemBooking(std::vector<QString>& v, const std::vector<std::pair<QString, QString>>& services, QWidget *parent = nullptr);
+    explicit ItemBooking(QString& idEmployee, std::vector<QString>& v, const std::vector<std::pair<QString, QString>>& services, QWidget *parent = nullptr);
     ~ItemBooking();
 public slots:
     void slotGetRooms(QDataStream& in);
@@ -60,6 +60,7 @@ private:
     QString filterAir;
     QString filterView;
     std::map<QString, int> prices;
+    QString idEmployee;
 };
 
 #endif // ITEMBOOKING_H

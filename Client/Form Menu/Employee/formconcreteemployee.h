@@ -1,7 +1,10 @@
 #ifndef FORMCONCRETEEMPLOYEE_H
 #define FORMCONCRETEEMPLOYEE_H
 
+#include "qcalendar.h"
+#include "qcalendarwidget.h"
 #include <QWidget>
+#include <QDate>
 
 namespace Ui {
 class FormConcreteEmployee;
@@ -18,8 +21,17 @@ public:
 private slots:
     void on_pushButton_2_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_3_clicked();
+    void slotDate(QDate);
+
+signals:
+    void signalSendToServer(const QByteArray&);
+
 private:
     Ui::FormConcreteEmployee *ui;
+    QScopedPointer<QCalendarWidget> calendar;
 };
 
 #endif // FORMCONCRETEEMPLOYEE_H

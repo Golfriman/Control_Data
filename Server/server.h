@@ -27,10 +27,13 @@ public:
     Server();
     ~Server();
 private:
-    Command* createConcreteCommand(int idCommand, QDataStream& in);
+    Command* createConcreteCommand(int idCommand, QDataStream& in, QTcpSocket *socket);
 private:
+    Send type;
     QSqlDatabase db;
-    std::list<QTcpSocket*>sockets;
+    std::list<QTcpSocket*>unknown;
+    std::list<QTcpSocket*>admins;
+    std::list<QTcpSocket*>maid;
     QByteArray data;
 
     QSharedPointer<SqlWorker> worker;
@@ -41,6 +44,7 @@ private:
 private slots:
     void slotChangeStatusRoom();
     void slotDisconnectClient();
+    void createMainMenuCommand();
 public slots:
     void incomingConnection(qintptr socketDescriptor)override;
     void slotReadyRead();

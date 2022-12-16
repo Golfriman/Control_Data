@@ -9,6 +9,7 @@ FormCreateBooking::FormCreateBooking(std::vector<std::pair<QString, QString> > &
 {
     ui->setupUi(this);
     price = 0;
+    sumService = 0;
     setWindowTitle("Создание брони");
     setWindowModality(Qt::ApplicationModal);
     auto validate = new PhoneValidator;
@@ -46,6 +47,7 @@ void FormCreateBooking::slotGetFindResult(QDataStream &in)
 
 void FormCreateBooking::slotGetFindRoomResult(QDataStream &in)
 {
+    ui->label_3->setText("Номер ");
     QLayoutItem* itm;
     while((itm = ui->scrollAreaWidgetContents->layout()->takeAt(0))!= nullptr)
     {
@@ -64,6 +66,9 @@ void FormCreateBooking::slotGetFindRoomResult(QDataStream &in)
         {
             prices.emplace(category, price);
             idRooms.emplace(category, idRoom);
+        }
+        else {
+            idRooms[category] = idRoom;
         }
         auto itm = new QRadioButton(category);
         connect(itm, SIGNAL(clicked()), this, SLOT(slotSelectTypeRoom()));
@@ -85,6 +90,7 @@ void FormCreateBooking::findRooms()
     QByteArray data;
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_6_2);
+    idRooms.clear();
     out << Send::ONE << Type::FIND_ROOM << ui->numPeople->currentText() << filter << bath << air << dataCheckIn << dataCheckOut;
     emit signalCreateBooking(data);
 }
@@ -92,6 +98,14 @@ void FormCreateBooking::findRooms()
 void FormCreateBooking::on_pushButton_2_clicked()
 {
     QByteArray data;
+    bool ok;
+    int dec = phone.toInt(&ok,10);
+    if(phone.toInt()!=0)
+    {
+        QMessageBox::about(this, "Создание бронирования", "Нельзя создать бронь без посетителя");
+        return;
+    }
+
     auto checkLineEdit = [](QLineEdit& edit)->bool
     {
       if(edit.text().isEmpty())
@@ -103,7 +117,13 @@ void FormCreateBooking::on_pushButton_2_clicked()
     };
     if(checkLineEdit(*ui->phone) || checkLineEdit(*ui->checkIn) || checkLineEdit(*ui->checkOut))
     {
+        QMessageBox::about(this, "Создание бронирования", "Отсутсвуют данные в некоторых полях");
      return;
+    }
+    if(idRooms.find(categories) == idRooms.end())
+    {
+        QMessageBox::about(this, "Создание бронирования", "Не выбрана категория номера");
+        return;
     }
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_6_2);
@@ -119,7 +139,7 @@ void FormCreateBooking::on_pushButton_2_clicked()
     services[services.size()-1] = ')';
     if(services.size()==1)
         services = "()";
-    out << Send::ALL << Type::INSERT << idRooms[categories] << fullname << phone << text(ui->checkIn) << text(ui->checkOut)<< ui->numPeople->currentText() << services;/*Информация о дате и тому подобное...*/
+    out << Send::ADMINS << Type::INSERT << idRooms[categories] << fullname << phone << text(ui->checkIn) << text(ui->checkOut)<< ui->numPeople->currentText() << services;/*Информация о дате и тому подобное...*/
     emit signalCreateBooking(data);
     deleteLater();
 }
@@ -166,14 +186,14 @@ void FormCreateBooking::slotClickServices(int index)
     {
     case Qt::Checked:
         selectedServices.emplace(itm->text());
-        price += priceService[itm->text()];
+        sumService += priceService[itm->text()];
         break;
     case Qt::Unchecked:
         if(selectedServices.find(itm->text())!=selectedServices.end()) selectedServices.erase(itm->text());
-        price -= priceService[itm->text()];
+        sumService -= priceService[itm->text()];
         break;
     }
-    ui->price->setText(QString::number(price));
+    ui->price->setText(QString::number(price + sumService));
     //std::cout << itm->text().toStdString() << std::endl;
 }
 
@@ -241,16 +261,23 @@ void FormCreateBooking::slotSelectTypeRoom()
     auto itm = (QRadioButton*)sender();
     categories = itm->text();
     ui->label_3->setText("Номер " + idRooms[categories]);
-/*ТУТА*/
+    price = prices[categories]* (intCheckout - intCheckIn);
 
-    price += prices[categories]* (intCheckout - intCheckIn);
-    ui->price->setText(QString::number(price));
+    ui->price->setText(QString::number(price + sumService));
 }
 
 
 void FormCreateBooking::on_numPeople_currentIndexChanged(int index)
 {
     (void)index;
+    findRooms();
+}
+
+
+void FormCreateBooking::on_filterView_currentTextChanged(const QString &arg1)
+{
+    if(arg1 == "Любой вид") filter = "%";
+    else filter = arg1;
     findRooms();
 }
 

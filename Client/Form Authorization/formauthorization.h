@@ -18,6 +18,10 @@ public:
     explicit FormAuthorization(QWidget *parent = nullptr);
     void showStatusConnection(bool ans, const QString& str = "");
     ~FormAuthorization();
+    QString getFullname()
+    {
+        return fullname;
+    }
 protected:
     virtual void hideEvent(QHideEvent*)override;
     virtual void closeEvent(QCloseEvent*)override;
@@ -29,7 +33,7 @@ public slots:
     void update(QDataStream& in);
 signals:
     void request(QByteArray&);
-    void login(const QString&, const QString&);
+    void login(const QString&);
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_pressed();
@@ -39,7 +43,9 @@ private slots:
     void on_quitButton_clicked();
 
 private:
+    QString fullname;
     bool lastConnectionToHost;
+    QString idEmployee;
     bool successful{false};
     Ui::FormAuthorization *ui;
     QByteArray data;

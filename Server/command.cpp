@@ -6,6 +6,13 @@ void Command::init()
     data.clear();
 }
 
+QString Command::convert(QString data)
+{
+    if(data.isEmpty())
+        return "null";
+    else return "'" + data + "'";
+}
+
 Command::Command()
 {
     out = new QDataStream(&data, QIODevice::WriteOnly);

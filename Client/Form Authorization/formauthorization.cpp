@@ -1,6 +1,7 @@
 #include "formauthorization.h"
 #include "ui_formauthorization.h"
 #include "validator.h"
+#include <qmessagebox.h>
 
 FormAuthorization::FormAuthorization(QWidget *parent) :
     QMainWindow(parent),
@@ -88,9 +89,11 @@ void FormAuthorization::update(QDataStream &in)
     in >> successful;
     if(successful)
     {
-        QString firstName, secondName;
-        in >> firstName >> secondName;
-        emit login(firstName, secondName);
+        bool result;
+        in >> idEmployee >>result >> fullname;
+        if(result)
+            emit login(idEmployee);
+        else QMessageBox::about(this, "Результат авторизации", "Вы не имеете прав доступа, для того чтобы пользоваться этим приложением");
     }
     else
     {
@@ -102,16 +105,14 @@ void FormAuthorization::on_pushButton_clicked()
 {
     data.clear();
     QDataStream out(&data, QIODevice::WriteOnly);
-    out <<  Form::AUTHORIZATION << Send::ONE << ui->login->text() << ui->password->text() <<
+    out <<  Form::AUTHORIZATION << Send::ADMIN << ui->login->text() << ui->password->text() <<
             Form::MAIN_MENU     << Send::ONE << Type::VIEW      <<
             Form::BOOKING       << Send::ONE << Type::CONSTANT  <<
             Form::BOOKING       << Send::ONE << Type::VIEW      <<
             Form::EMPLOYEE      << Send::ONE << Type::VIEW      <<
             Form::CHECK_IN      << Send::ONE << Type::VIEW      <<
-            Form::REPORT        << Send::ONE << Type::VIEW      <<
             Form::ROOMS         << Send::ONE << Type::VIEW      <<
-            Form::SETTINGS      << Send::ONE <<
-            Form::SIGN_UP       << Send::ONE;
+            Form::SETTINGS      << Send::ONE;
     emit request(data);
 }
 
